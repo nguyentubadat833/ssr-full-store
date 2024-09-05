@@ -6,10 +6,6 @@ const object = {
 }
 const cropObject = useOmit(object, ['phone'])
 
-const {data} = await useFetch('/api/main/product/select', {
-  method: 'GET'
-})
-console.log(data.value)
 </script>
 
 <template>
