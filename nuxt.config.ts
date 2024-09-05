@@ -22,11 +22,11 @@ export default defineNuxtConfig({
         sharedPrerenderData: true
     },
     runtimeConfig: {
-      auth: {
-          secret: process.env.NUXT_AUTH_SECRET,
-          clientId: process.env.NUXT_AUTH_GOOGLE_CLIENT_ID,
-          secretId: process.env.NUXT_AUTH_GOOGLE_CLIENT_SECRET
-      }
+        auth: {
+            secret: process.env.NUXT_AUTH_SECRET,
+            clientId: process.env.NUXT_AUTH_GOOGLE_CLIENT_ID,
+            secretId: process.env.NUXT_AUTH_GOOGLE_CLIENT_SECRET
+        }
     },
 
     modules: ['@nuxt/ui', "nuxt-lodash", '@sidebase/nuxt-auth'],
@@ -37,5 +37,11 @@ export default defineNuxtConfig({
             defaultProvider: 'google',
             addDefaultCallbackUrl: true
         }
+    },
+
+    nitro: {
+        experimental: {
+            websocket: true
+        },
     }
 })
