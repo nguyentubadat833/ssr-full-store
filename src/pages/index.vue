@@ -1,10 +1,8 @@
 <script setup>
-const object = {
-  name: 'datnguyen',
-  email: 'datnguyen@gmail.com',
-  phone: '0965904833'
-}
-const cropObject = useOmit(object, ['phone'])
+definePageMeta({
+  title: 'Home',
+  navOrder: 1
+})
 
 </script>
 

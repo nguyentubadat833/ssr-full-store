@@ -1,5 +1,8 @@
 <script setup>
-
+definePageMeta({
+  title: 'About',
+  navOrder: 3
+})
 </script>
 
 <template>

@@ -1,14 +1,13 @@
 <script setup>
 definePageMeta({
-  title: 'Cart',
-  type: 'secondary'
+  title: 'Category',
+  navOrder: 2
 })
-
 </script>
 
 <template>
   <div>
-    cart
+    category
   </div>
 </template>
 

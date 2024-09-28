@@ -1,4 +1,9 @@
-<script>
+<script setup>
+definePageMeta({
+  layout: false,
+  hidden: true
+})
+
 
 </script>
 

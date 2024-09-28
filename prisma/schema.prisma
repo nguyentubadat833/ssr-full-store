@@ -1,0 +1,26 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("NUXT_DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(auto()) @map("_id") @db.ObjectId
+  email           String?   @unique
+  password_hash   String?
+  google_id       String?   @unique
+  facebook_id     String?   @unique
+  profile         Json?
+  created_at      DateTime  @default(now())
+  last_updated_at DateTime?
+}
+
+model Log {
+  id      String   @id @default(auto()) @map("_id") @db.ObjectId
+  time    DateTime @default(now())
+  message String
+  status  Int
+}

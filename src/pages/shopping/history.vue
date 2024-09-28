@@ -1,5 +1,8 @@
-<script setup lang="ts">
-
+<script setup>
+definePageMeta({
+  title: 'History',
+  type: 'secondary'
+})
 </script>
 
 <template>

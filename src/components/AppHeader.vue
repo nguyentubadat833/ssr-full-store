@@ -1,5 +1,26 @@
-<script setup lang="ts">
+<script setup>
+const {navLinksPrimary} = useNav()
+const {data: authData, signOut, signIn} = useAuth()
 
+const items = ref([
+  [{
+    label: 'Profile',
+    avatar: {
+      src: authData.value?.user?.image
+    }
+  }],
+  [
+    {
+      label: 'Shopping Cart',
+      icon: 'ic:sharp-shopping-cart'
+    }
+  ],
+  [{
+    label: 'Logout',
+    icon: 'ic:round-log-out',
+    click: () => signOut()
+  }]
+])
 </script>
 
 <template>
@@ -8,14 +29,43 @@
       <div style="grid-area: logo">
         LOGO
       </div>
-      <div style="grid-area: primary-menu">
-        Primary Menu
+      <div style="grid-area: primary-menu" class="flex space-x-4">
+        <ULink
+            v-for="(navLink, index) in navLinksPrimary"
+            :key="index"
+            :label="navLink.text"
+            :to="navLink.link"
+            variant="link"
+            class="hover:text-primary underline-offset-8"
+            color="gray"
+            active-class="text-primary underline"
+            exact
+        >{{ navLink.text }}
+        </ULink>
       </div>
-      <div style="grid-area: secondary-menu">
-        Secondary Menu
+      <div style="grid-area: secondary-menu" class="flex items-center gap-2">
+        <ColorModeToggle/>
+        <UButton class="rounded-lg" variant="ghost" v-if="!authData">
+          <UIcon name="ic:sharp-shopping-cart" class="text-2xl"/>
+        </UButton>
+        <UDropdown v-if="authData" :items="items" :popper="{ placement: 'bottom-start' }">
+          <UAvatar
+              :src="authData?.user.image"
+              alt="Avatar"
+          />
+        </UDropdown>
+        <UButton v-else label="Sign In" @click="signIn"/>
+
       </div>
       <div style="grid-area: search">
-        Search
+        <UFormGroup hint="Optional">
+          <UInput
+              placeholder="Search..."
+              size="sm"
+              trailing-icon="i-material-symbols-search-rounded"
+              class="w-full"
+          />
+        </UFormGroup>
       </div>
     </div>
   </nav>

@@ -1,6 +1,8 @@
 import {NuxtAuthHandler} from '#auth'
 import GoogleProvider from 'next-auth/providers/google'
+import userRepo from "~/server/utils/repositories/userRepo.js";
 
+const {findUser, createUser} = userRepo
 export default NuxtAuthHandler({
     secret: useRuntimeConfig().auth.secret,
     providers: [
@@ -14,7 +16,44 @@ export default NuxtAuthHandler({
     callbacks: {
         /* on before signin */
         async signIn({user, account, profile, email, credentials}) {
-            // console.log('callback-sinIn-user', user)
+            // console.log('user', user)
+            // console.log('account', account)
+            // console.log('profile', profile)
+            // console.log('email', email)
+
+            if (account?.provider === 'google'){
+                const googleId = account?.providerAccountId
+                const userExists = await findUser({
+                    googleId: googleId
+                })
+                if (userExists){
+                    console.log('userExists', userExists)
+                }else {
+                    const profile = {
+                        name: user?.name,
+                        email: user?.email,
+                        avatar: user?.image
+                    }
+                    const newUser = await createUser({
+                        google_id: googleId,
+                        profile: profile
+                    })
+                    console.log('created user: ', newUser)
+                }
+            }
+            // const logObject = {
+            //     type: 'auth_signIn',
+            //     data: {
+            //         auth_provider: account.provider,
+            //         auth_type: account.type,
+            //         user_id: user.id,
+            //         user_name: user.name,
+            //         user_email: user.email,
+            //         user_image: user.image,
+            //     }
+            // }
+            // console.log(logObject)
+            // logRepo.pushLog(JSON.stringify(logObject))
             return true
         },
         /* on redirect to another url */
@@ -23,11 +62,16 @@ export default NuxtAuthHandler({
         },
         /* on session retrival */
         async session({session, user, token}) {
+            console.log('session', session)
             return session
         },
         /* on JWT token creation or mutation */
         async jwt({token, user, account, profile, isNewUser}) {
             // console.log('token', token)
+            // console.log('user', user)
+            // console.log('account', account)
+            // console.log('profile', profile)
+            // console.log('isNewUser', isNewUser)
             return token
         }
     },

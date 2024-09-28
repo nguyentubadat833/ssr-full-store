@@ -2,7 +2,8 @@ export default defineEventHandler(async (event) => {
     const eventStream = createEventStream(event)
 
     const interval = setInterval(async () => {
-        await eventStream.push(`Message @ ${new Date().toLocaleTimeString()}`)
+        const logs = await logRepo.findLog()
+        await eventStream.push(JSON.stringify(logs))
     }, 1000)
 
 

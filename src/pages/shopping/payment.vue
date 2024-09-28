@@ -1,4 +1,8 @@
-<script setup lang="ts">
+<script setup>
+definePageMeta({
+  title: 'Payment',
+  type: 'secondary'
+})
 
 </script>
 
