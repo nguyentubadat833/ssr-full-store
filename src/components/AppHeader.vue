@@ -21,6 +21,28 @@ const items = ref([
     click: () => signOut()
   }]
 ])
+
+// async function toSignIn() {
+//   const width = 500;
+//   const height = 500;
+//
+//   const screenWidth = window.screen.width;
+//   const screenHeight = window.screen.height;
+//
+//   const left = (screenWidth - width) / 2;
+//   const top = (screenHeight - height) / 2;
+//   await navigateTo('/auth/signIn', {
+//     open: {
+//       target: "_blank",
+//       windowFeatures: {
+//         width: 500,
+//         height: 500 + 100,
+//         top: top - 100,
+//         left: left
+//       }
+//     }
+//   })
+// }
 </script>
 
 <template>
