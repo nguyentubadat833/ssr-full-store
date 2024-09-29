@@ -5,7 +5,7 @@
 <template>
   <div class="flex flex-col min-h-screen">
     <AppHeader/>
-    <div class="flex-1">
+    <div class="flex-1 container mx-auto px-5">
       <slot/>
     </div>
     <AppFooter/>

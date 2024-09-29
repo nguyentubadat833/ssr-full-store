@@ -1,5 +1,4 @@
 <script setup lang="tsx">
-import {slideover} from "#ui/ui.config";
 
 const route = useRoute()
 const {navLinksPrimary} = useNav()
@@ -19,9 +18,8 @@ async function slideoverToPage(link) {
 const userDropdownItems = ref([
   [{
     label: 'Profile',
-    avatar: {
-      src: authData.value?.user?.image
-    }
+    icon: 'ic:baseline-account-circle',
+    click: () => navigateTo('/profile')
   }],
   [
     {
@@ -124,7 +122,7 @@ const Logo = () => (
                 }}</span>
           </div>
           <div>
-            <UButton label="Sign In" @click="signIn" block/>
+            <UButton v-if="!authData" label="Sign In" icon="ic:outline-log-in" @click="signIn" block/>
           </div>
         </div>
       </USlideover>
