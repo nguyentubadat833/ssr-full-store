@@ -29,7 +29,13 @@ export default defineNuxtConfig({
         }
     },
 
-    modules: ["nuxt-lodash", '@sidebase/nuxt-auth', "@prisma/nuxt", '@nuxt/ui'],
+    modules: [
+      "nuxt-lodash",
+      '@sidebase/nuxt-auth',
+      "@prisma/nuxt",
+      '@nuxt/ui',
+      '@nuxt/content'
+    ],
     auth: {
         provider: {
             type: 'authjs',

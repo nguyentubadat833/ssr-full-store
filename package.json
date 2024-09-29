@@ -12,6 +12,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxt/content": "^2.13.2",
     "@nuxt/ui": "^2.18.6",
     "@prisma/nuxt": "^0.0.35",
     "@sidebase/nuxt-auth": "^0.9.1",
