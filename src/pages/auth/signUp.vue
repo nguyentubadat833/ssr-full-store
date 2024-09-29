@@ -32,7 +32,7 @@ function onRegister() {
       </UFormGroup>
       <UButton type="submit" label="Submit" block/>
     </UForm>
-    <UDivider label="OR" class="my-5"/>
+    <UDivider label="OR" class="my-6"/>
     <div class="space-y-6">
       <UButton label="Sign In" color="white" block @click="navigateTo('/auth/signIn')"/>
     </div>

@@ -1,8 +1,22 @@
-<script setup>
+<script setup lang="tsx">
+import {slideover} from "#ui/ui.config";
+
+const route = useRoute()
 const {navLinksPrimary} = useNav()
 const {data: authData, signOut, signIn} = useAuth()
 
-const items = ref([
+const isOpenToggleMenu = ref(false)
+
+async function toShoppingCartPage() {
+  await navigateTo('/shopping/cart')
+}
+
+async function slideoverToPage(link) {
+  await navigateTo(link)
+  isOpenToggleMenu.value = false
+}
+
+const userDropdownItems = ref([
   [{
     label: 'Profile',
     avatar: {
@@ -12,7 +26,8 @@ const items = ref([
   [
     {
       label: 'Shopping Cart',
-      icon: 'ic:sharp-shopping-cart'
+      icon: 'ic:sharp-shopping-cart',
+      click: async () => await toShoppingCartPage()
     }
   ],
   [{
@@ -21,6 +36,13 @@ const items = ref([
     click: () => signOut()
   }]
 ])
+
+const Logo = () => (
+    <div style="grid-area: logo" class="flex items-center gap-3">
+      <Icon name="i-fluent-emoji:shopping-bags" size="32"/>
+      <span class="text-primary-600 dark:text-primary-200 font-extrabold font-serif sm:text-xl text-md">Shopping World</span>
+    </div>
+)
 
 // async function toSignIn() {
 //   const width = 500;
@@ -42,54 +64,71 @@ const items = ref([
 //       }
 //     }
 //   })
-// }
+//
 </script>
 
 <template>
   <nav class="container mx-auto px-4">
-    <div class="flex h-full items-center justify-between navbar-grid py-4">
-      <div style="grid-area: logo">
-        LOGO
-      </div>
-      <div style="grid-area: primary-menu" class="flex space-x-4">
+    <div class="flex items-center justify-between navbar-grid py-7">
+      <Logo/>
+      <div style="grid-area: primary-menu" class="flex justify-center space-x-4 py-4">
+        <UButton icon="ic:baseline-menu" class="w-9 flex justify-center md:hidden" @click="isOpenToggleMenu = true"/>
         <ULink
             v-for="(navLink, index) in navLinksPrimary"
             :key="index"
             :label="navLink.text"
             :to="navLink.link"
             variant="link"
-            class="hover:text-primary underline-offset-8"
-            color="gray"
+            class="hover:text-primary underline-offset-8 font-medium md:block hidden"
             active-class="text-primary underline"
             exact
         >{{ navLink.text }}
         </ULink>
       </div>
-      <div style="grid-area: secondary-menu" class="flex items-center gap-2">
-        <ColorModeToggle/>
-        <UButton class="rounded-lg" variant="ghost" v-if="!authData">
+      <div style="grid-area: secondary-menu" class="flex items-center gap-3">
+        <ColorModeToggle class="sm:block hidden"/>
+        <UButton class="rounded-lg" variant="ghost" v-if="!authData" @click="toShoppingCartPage">
           <UIcon name="ic:sharp-shopping-cart" class="text-2xl"/>
         </UButton>
-        <UDropdown v-if="authData" :items="items" :popper="{ placement: 'bottom-start' }">
+        <UDropdown v-if="authData" :items="userDropdownItems" :popper="{ placement: 'bottom-start' }">
           <UAvatar
               :src="authData?.user.image"
               alt="Avatar"
           />
         </UDropdown>
-        <UButton v-else label="Sign In" @click="signIn"/>
+        <UButton v-else label="Sign In" @click="signIn" class="sm:block hidden"/>
 
       </div>
       <div style="grid-area: search">
-        <UFormGroup hint="Optional">
-          <UInput
-              placeholder="Search..."
-              size="sm"
-              trailing-icon="i-material-symbols-search-rounded"
-              class="w-full"
-          />
-        </UFormGroup>
+        <UInput
+            placeholder="Search..."
+            size="sm"
+            trailing-icon="i-material-symbols-search-rounded"
+            class="w-full"
+        />
       </div>
     </div>
+    <ClientOnly>
+      <USlideover v-model="isOpenToggleMenu" side="left" class="w-80">
+        <div class="px-4 py-8 flex flex-col min-h-screen">
+          <div class="flex justify-between items-center mb-16">
+            <Logo/>
+            <ColorModeToggle/>
+          </div>
+
+          <div class="flex flex-col items-center gap-8 flex-1">
+              <span v-for="item in navLinksPrimary" @click="slideoverToPage(item?.link)"
+                    class="hover:text-primary underline-offset-8 text-xl font-semibold "
+                    :class="{'text-primary font-bold': route.fullPath === item?.link}">{{
+                  item?.text
+                }}</span>
+          </div>
+          <div>
+            <UButton label="Sign In" @click="signIn" block/>
+          </div>
+        </div>
+      </USlideover>
+    </ClientOnly>
   </nav>
 </template>
 

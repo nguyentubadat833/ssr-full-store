@@ -12,7 +12,7 @@ const authCardStyleConfig = {
   <div class="h-screen flex items-center justify-center">
     <div class="md:w-96 w-full h-3/4">
       <UCard :ui="authCardStyleConfig">
-        <div class="flex justify-center mb-16">
+        <div class="flex justify-center mb-16 mt-5">
           <span class="text-4xl font-bold text-center">{{route?.meta?.pageName}}</span>
         </div>
         <NuxtPage/>

@@ -36,10 +36,10 @@ function onLogin() {
         <UButton type="submit" label="Continue" block/>
       </div>
     </UForm>
-    <UDivider label="OR" class="my-5"/>
+    <UDivider label="OR" class="my-6"/>
     <div class="space-y-6">
-      <UButton label="Sign Up" color="white" block @click="navigateTo('/auth/signUp')"/>
       <UButton label="Continue with Google" color="white" icon="logos:google-icon" block @click="signIn('google')"/>
+      <UButton label="Sign Up" color="white" block @click="navigateTo('/auth/signUp')"/>
     </div>
   </div>
 </template>
