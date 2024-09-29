@@ -36,6 +36,12 @@ export default defineNuxtConfig({
       '@nuxt/ui',
       '@nuxt/content'
     ],
+
+    prisma: {
+        autoSetupPrisma: false,
+        // generateClient: false
+    },
+
     auth: {
         provider: {
             type: 'authjs',
