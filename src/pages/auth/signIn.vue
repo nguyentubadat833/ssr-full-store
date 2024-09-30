@@ -1,5 +1,5 @@
 <script setup>
-
+import {object, string} from 'yup'
 
 definePageMeta({
   pageName: 'Sign In',
@@ -10,6 +10,11 @@ definePageMeta({
 const {signIn, getProviders} = useAuth()
 const providers = await getProviders()
 console.log(providers)
+
+const loginFormSchema = object({
+  email: string().email('Invalid email').required('Required'),
+  password: string().required('Required')
+})
 const loginFormState = reactive({
   email: '',
   password: ''
@@ -17,7 +22,7 @@ const loginFormState = reactive({
 
 async function onLogin() {
   await signIn("credentials", {
-    // redirect: false,
+    redirect: false,
     username: loginFormState.email,
     password: loginFormState.password
   })
@@ -28,9 +33,9 @@ async function onLogin() {
 
 <template>
   <div>
-    <UForm :state="loginFormState" class="space-y-6" @submit="onLogin">
+    <UForm :state="loginFormState" :schema="loginFormSchema" class="space-y-6" @submit="onLogin">
       <UFormGroup label="Email" name="email">
-        <UInput v-model="loginFormState.email" type="email" placeholder="Your email" />
+        <UInput v-model="loginFormState.email" type="email" placeholder="Your email"/>
       </UFormGroup>
       <UFormGroup label="Password" name="password">
         <UInput v-model="loginFormState.password" type="password" placeholder="Your password"/>

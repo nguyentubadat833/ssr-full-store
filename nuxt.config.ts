@@ -30,11 +30,11 @@ export default defineNuxtConfig({
     },
 
     modules: [
-      "nuxt-lodash",
-      '@sidebase/nuxt-auth',
-      "@prisma/nuxt",
-      '@nuxt/ui',
-      '@nuxt/content'
+        "nuxt-lodash",
+        '@sidebase/nuxt-auth',
+        "@prisma/nuxt",
+        '@nuxt/ui',
+        '@nuxt/content',
     ],
 
     prisma: {
@@ -56,7 +56,6 @@ export default defineNuxtConfig({
             preprocessorOptions: {
                 scss: {
                     silenceDeprecations: ["legacy-js-api"]
-
                 }
             }
         }

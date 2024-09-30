@@ -1,8 +1,17 @@
 <script setup>
+import {object, string} from "yup";
+
+const toast = useToast()
+
 definePageMeta({
   pageName: 'Sign Up',
   layout: 'auth',
   auth: {unauthenticatedOnly: true, navigateAuthenticatedTo: '/'}
+})
+
+const registerFormSchema = object({
+  email: string().email('Invalid email').required('Required'),
+  password: string().required('Required')
 })
 
 const registerFormState = reactive({
@@ -11,15 +20,22 @@ const registerFormState = reactive({
   password: ''
 })
 
-function onRegister() {
-
+async function onRegister() {
+    await useApiConfig({
+      endpoint: '/api/auth/register',
+      method: 'POST',
+      body: registerFormState,
+      toastSuccessObjectCustom: {
+        description: registerFormState.email
+      }
+    })
 }
 
 </script>
 
 <template>
   <div>
-    <UForm :state="registerFormState" class="space-y-7" @submit="onRegister">
+    <UForm :state="registerFormState" :schema="registerFormSchema" class="space-y-7" @submit="onRegister">
       <UFormGroup label="Name" name="name" >
         <UInput v-model="registerFormState.name" placeholder="Your name"/>
       </UFormGroup>
