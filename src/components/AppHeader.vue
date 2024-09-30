@@ -37,7 +37,7 @@ const userDropdownItems = ref([
 
 const Logo = () => (
     <div style="grid-area: logo" class="flex items-center gap-3">
-      <Icon name="i-fluent-emoji:shopping-bags" size="32"/>
+      <Icon name="i-fluent-emoji:shopping-bags" size="35"/>
       <span class="text-primary-600 dark:text-primary-200 font-extrabold font-serif sm:text-xl text-md">Shopping World</span>
     </div>
 )
@@ -92,6 +92,7 @@ const Logo = () => (
           <UAvatar
               :src="authData?.user.image"
               alt="Avatar"
+              size="md"
           />
         </UDropdown>
         <UButton v-else label="Sign In" @click="signIn" class="sm:block hidden"/>

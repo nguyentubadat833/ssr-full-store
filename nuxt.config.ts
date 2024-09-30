@@ -51,6 +51,17 @@ export default defineNuxtConfig({
         }
     },
 
+    vite: {
+        css: {
+            preprocessorOptions: {
+                scss: {
+                    silenceDeprecations: ["legacy-js-api"]
+
+                }
+            }
+        }
+    },
+
     nitro: {
         experimental: {
             websocket: true
