@@ -1,15 +1,17 @@
 <script setup>
 import {object, string} from 'yup'
 
+const isLoading = ref(false)
+const {signIn, getProviders} = useAuth()
+const providers = await getProviders()
+
 definePageMeta({
   pageName: 'Sign In',
   layout: 'auth',
   auth: {unauthenticatedOnly: true, navigateAuthenticatedTo: '/'}
 })
 
-const {signIn, getProviders} = useAuth()
-const providers = await getProviders()
-console.log(providers)
+
 
 const loginFormSchema = object({
   email: string().email('Invalid email').required('Required'),
@@ -21,11 +23,13 @@ const loginFormState = reactive({
 })
 
 async function onLogin() {
+  isLoading.value = true
   await signIn("credentials", {
-    redirect: false,
-    username: loginFormState.email,
+    // redirect: false,
+    email: loginFormState.email,
     password: loginFormState.password
   })
+  isLoading.value = false
 }
 
 
@@ -42,7 +46,7 @@ async function onLogin() {
       </UFormGroup>
       <div class="text-right space-y-7">
         <span class="text-gray-600 italic cursor-pointer hover:underline hover:text-orange-400 text-sm">Forgot password ?</span>
-        <UButton type="submit" label="Continue" block/>
+        <UButton :loading="isLoading" type="submit" label="Continue" block/>
       </div>
     </UForm>
     <UDivider label="OR" class="my-6"/>

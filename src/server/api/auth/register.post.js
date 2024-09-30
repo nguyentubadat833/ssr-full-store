@@ -8,7 +8,10 @@ export default defineEventHandler(async (event) => {
         } else {
             const user = await createUser({
                 email: emailReq,
-                password_hash: await generatePasswordHash(body.password)
+                password_hash: await generatePasswordHash(body.password),
+                profile: {
+                    name: body?.name
+                }
             })
             return user.email
         }

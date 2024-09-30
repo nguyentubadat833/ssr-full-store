@@ -13,6 +13,10 @@ export default defineNuxtConfig({
         // Auto-import pinia stores defined in `~/stores`
         dirs: ['stores']
     },
+    app: {
+        pageTransition: {name: 'page', mode: 'out-in',},
+        layoutTransition: {name: 'layout', mode: 'out-in'},
+    },
     css: [
         '@/assets/style/main.scss'
     ],

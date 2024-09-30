@@ -1,7 +1,7 @@
 <script setup>
 import {object, string} from "yup";
 
-const toast = useToast()
+const isLoading = ref(false)
 
 definePageMeta({
   pageName: 'Sign Up',
@@ -21,14 +21,21 @@ const registerFormState = reactive({
 })
 
 async function onRegister() {
-    await useApiConfig({
-      endpoint: '/api/auth/register',
-      method: 'POST',
-      body: registerFormState,
-      toastSuccessObjectCustom: {
-        description: registerFormState.email
-      }
-    })
+  isLoading.value = true
+  await useApiConfig({
+    endpoint: '/api/auth/register',
+    method: 'POST',
+    body: registerFormState,
+    toastSuccessObjectCustom: {
+      description: registerFormState.email
+    },
+    callbackMethodOnSuccess: () => {
+      setTimeout(() => {
+        navigateTo('/auth/signIn')
+      }, 2000)
+    }
+  })
+  isLoading.value = false
 }
 
 </script>
@@ -36,17 +43,17 @@ async function onRegister() {
 <template>
   <div>
     <UForm :state="registerFormState" :schema="registerFormSchema" class="space-y-7" @submit="onRegister">
-      <UFormGroup label="Name" name="name" >
+      <UFormGroup label="Name" name="name">
         <UInput v-model="registerFormState.name" placeholder="Your name"/>
       </UFormGroup>
-      <UFormGroup label="Email" name="email" >
+      <UFormGroup label="Email" name="email">
         <UInput v-model="registerFormState.email" placeholder="Your email"/>
       </UFormGroup>
 
       <UFormGroup label="Password" name="password">
         <UInput v-model="registerFormState.password" type="password" placeholder="Your password"/>
       </UFormGroup>
-      <UButton type="submit" label="Submit" block/>
+      <UButton :loading="isLoading" type="submit" label="Submit" block/>
     </UForm>
     <UDivider label="OR" class="my-6"/>
     <div class="space-y-6">

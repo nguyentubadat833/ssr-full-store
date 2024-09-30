@@ -1,6 +1,8 @@
 import {NuxtAuthHandler} from '#auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
+import {verifyPassword} from "~/server/utils/passwordHash.js";
+
 
 const {findUser, createUser} = userRepo
 export default NuxtAuthHandler({
@@ -12,8 +14,25 @@ export default NuxtAuthHandler({
         }),
         CredentialsProvider.default({
             name: 'Credentials',
+            // credentials: {
+            //     username: { label: "Username", type: "text" },
+            //     password: {  label: "Password", type: "password" }
+            // },
             async authorize(credentials, req) {
-                console.log(credentials)
+                const {email, password} = credentials
+                if (email && password){
+                    const user = await findUser({
+                        email: email
+                    })
+                    console.log('find user', user)
+                    if (user && await verifyPassword(password, user.password_hash)){
+                        return {
+                            name: user?.profile?.name,
+                            email: user.email
+                        }
+                    }
+                }
+                return null
             }
         })
 
