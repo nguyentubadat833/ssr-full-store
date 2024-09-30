@@ -1,5 +1,6 @@
-<script setup lang="ts">
-// Remember to disable the middleware protection from your page!
+<script setup>
+
+
 definePageMeta({
   pageName: 'Sign In',
   layout: 'auth',
@@ -7,15 +8,19 @@ definePageMeta({
 })
 
 const {signIn, getProviders} = useAuth()
-// const providers = await getProviders()
-
+const providers = await getProviders()
+console.log(providers)
 const loginFormState = reactive({
   email: '',
   password: ''
 })
 
-function onLogin() {
-
+async function onLogin() {
+  await signIn("credentials", {
+    // redirect: false,
+    username: loginFormState.email,
+    password: loginFormState.password
+  })
 }
 
 
@@ -24,10 +29,9 @@ function onLogin() {
 <template>
   <div>
     <UForm :state="loginFormState" class="space-y-6" @submit="onLogin">
-      <UFormGroup label="Email" name="email" >
-        <UInput v-model="loginFormState.email" placeholder="Your email"/>
+      <UFormGroup label="Email" name="email">
+        <UInput v-model="loginFormState.email" type="email" placeholder="Your email" />
       </UFormGroup>
-
       <UFormGroup label="Password" name="password">
         <UInput v-model="loginFormState.password" type="password" placeholder="Your password"/>
       </UFormGroup>

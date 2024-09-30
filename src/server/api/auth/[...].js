@@ -1,16 +1,33 @@
 import {NuxtAuthHandler} from '#auth'
 import GoogleProvider from 'next-auth/providers/google'
+import CredentialsProvider from 'next-auth/providers/credentials'
 import userRepo from "~/server/utils/repositories/userRepo.js";
 
 const {findUser, createUser} = userRepo
 export default NuxtAuthHandler({
     secret: useRuntimeConfig().auth.secret,
     providers: [
-        // @ts-expect-error Use .default here for it to work during SSR.
         GoogleProvider.default({
             clientId: useRuntimeConfig().auth.clientId,
             clientSecret: useRuntimeConfig().auth.secretId
+        }),
+        CredentialsProvider.default({
+            name: 'Credentials',
+            // credentials: {
+            //     username: { label: "Username", type: "text" },
+            //     password: {  label: "Password", type: "password" }
+            // },
+            async authorize(credentials, req) {
+                console.log('authorize', credentials)
+                // console.log('body', req.body)
+                // if (user) {
+                //     return user
+                // } else {
+                //     return null
+                // }
+            }
         })
+
     ],
 
     callbacks: {
