@@ -35,33 +35,34 @@ function mapCustomToastObject(originalObject, newObject) {
     })
 }
 
-export default function ({
-                             endpoint = '',
-                             method = 'GET',
-                             params,
-                             body,
-                             isShowSuccessMessage = true,
-                             isShowErrorMessage = true,
-                             isUseDefaultProcessOnResponse = true,
-                             customProcessOnResponse,
-                             callbackMethodOnSuccess,
-                             callbackMethodOnError,
-                             requestOptionsCustom,
-                             toastSuccessObjectCustom,
-                             toastErrorObjectCustom
-                         } = {}) {
+export default async function ({
+                                   endpoint = '',
+                                   method = 'GET',
+                                   params,
+                                   body,
+                                   isShowSuccessMessage = true,
+                                   isShowErrorMessage = true,
+                                   isUseDefaultProcessOnResponse = true,
+                                   customProcessOnResponse,
+                                   callbackMethodOnSuccess,
+                                   callbackMethodOnError,
+                                   requestOptionsCustom,
+                                   toastSuccessObjectCustom,
+                                   toastErrorObjectCustom
+                               } = {}) {
     const toast = useToast()
     if (!endpoint) {
         throw new Error('Endpoint is required')
     }
-    return $fetch(endpoint, {
+    return await $fetch(endpoint, {
         onRequest({options}) {
             options.method = method
             if (params) {
                 options.params = params
             }
-            if (body) {
+            if (isObject(body)) {
                 options.body = body
+                console.log(options.body)
             }
             if (isFunction(requestOptionsCustom)) {
                 requestOptionsCustom(options)
@@ -69,7 +70,6 @@ export default function ({
         },
         onResponse({response}) {
             console.log(response)
-
             if (isUseDefaultProcessOnResponse) {
                 if (response.ok === true) {
                     if (isFunction(callbackMethodOnSuccess)) {

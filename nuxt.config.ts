@@ -39,11 +39,15 @@ export default defineNuxtConfig({
         "@prisma/nuxt",
         '@nuxt/ui',
         '@nuxt/content',
+        'nuxt-file-storage'
     ],
 
+    fileStorage: {
+        mount: process.env.NUXT_UPLOAD_URL
+    },
+
     prisma: {
-        autoSetupPrisma: false,
-        // generateClient: false
+        installStudio: false
     },
 
     auth: {

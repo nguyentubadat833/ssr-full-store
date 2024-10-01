@@ -1,6 +1,6 @@
 <script setup>
 definePageMeta({
-  title: 'About',
+  title: 'About Us',
   navOrder: 3
 })
 </script>
