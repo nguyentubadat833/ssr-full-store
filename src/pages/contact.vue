@@ -1,15 +1,15 @@
 <script setup>
 definePageMeta({
-  title: 'Payment',
-  // type: 'secondary'
+  title: 'Contact',
+  navOrder: 1,
+  type: 'secondary'
 })
-
 </script>
 
 <template>
-<div>
-  payment
-</div>
+  <div>
+    contact
+  </div>
 </template>
 
 <style scoped>

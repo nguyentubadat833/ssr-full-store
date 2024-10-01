@@ -30,7 +30,7 @@ export default function () {
 
     const navLinksPrimary = computed(() => {
         return navLinks.value.filter(
-            (navLink) => !navLink.type || navLink.type === 'primary',
+            (navLink) => navLink.type === 'primary',
         )
     })
 

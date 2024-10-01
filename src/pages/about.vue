@@ -1,7 +1,8 @@
 <script setup>
 definePageMeta({
-  title: 'About Us',
-  navOrder: 3
+  title: 'About',
+  navOrder: 2,
+  type: 'secondary'
 })
 </script>
 

@@ -1,7 +1,7 @@
 <script setup>
 definePageMeta({
   title: 'Cart',
-  type: 'secondary'
+  // type: 'secondary'
 })
 
 </script>

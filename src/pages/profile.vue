@@ -2,7 +2,7 @@
 
 definePageMeta({
   title: 'Profile',
-  type: 'secondary'
+  // type: 'secondary'
 })
 
 const {handleFileInput, files} = useFileStorage()

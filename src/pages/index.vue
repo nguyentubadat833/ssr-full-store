@@ -1,7 +1,8 @@
 <script setup>
 definePageMeta({
   title: 'Home',
-  navOrder: 1
+  navOrder: 1,
+  type: 'primary'
 })
 
 </script>

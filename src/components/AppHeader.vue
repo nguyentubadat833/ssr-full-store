@@ -1,9 +1,9 @@
 <script setup lang="tsx">
 
 const route = useRoute()
-const {navLinksPrimary} = useNav()
+const {navLinksPrimary, navLinksSecondary} = useNav()
 const {data: authData, signOut, signIn} = useAuth()
-const {pageName} = await queryContent('/meta').findOne()
+const {pageName, contact} = await queryContent('/meta').findOne()
 
 const isOpenToggleMenu = ref(false)
 
@@ -69,9 +69,29 @@ const Logo = () => (
 
 <template>
   <nav>
-    <div>
-      <span></span>
+    <div class="bg-orange-400">
+      <div class="container mx-auto py-2 sm:px-4 pl-3">
+        <div class="flex justify-between">
+          <div class="flex items-center gap-1">
+            <Icon name="ic:baseline-local-phone" size="18" class="text-zinc-700"/>
+            <span class="text-sm text-zinc-700 font-medium">{{ contact?.phone }}</span>
+          </div>
+          <div class="flex text-sm gap-4 text-zinc-700 font-medium">
+            <div class="flex gap-4 items-center">
+              <span v-for="item in navLinksSecondary" class="cursor-pointer hover:underline" @click="navigateTo(item.link)">{{ item.text }}</span>
+            </div>
+            <div class="h-5 flex items-center gap-2">
+              <span v-if="!authData" class="hover:underline cursor-pointer" @click="signIn">Sign In</span>
+              <span v-else class="hover:underline cursor-pointer" @click="signOut">Logout</span>
+              <ColorModeToggle/>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
+
     <div class="container mx-auto px-4">
       <div class="flex items-center justify-between navbar-grid py-7">
         <Logo class="select-none"/>
@@ -90,10 +110,17 @@ const Logo = () => (
           </ULink>
         </div>
         <div style="grid-area: secondary-menu" class="flex items-center gap-3">
-          <ColorModeToggle class="sm:block hidden"/>
-          <UButton class="rounded-lg" variant="ghost" v-if="!authData" @click="toShoppingCartPage">
-            <UIcon name="ic:sharp-shopping-cart" class="text-2xl"/>
-          </UButton>
+          <!--          <ColorModeToggle class="sm:block hidden"/>-->
+          <div v-if="!authData" @click="toShoppingCartPage" class="flex items-center">
+            <UButton class="rounded-lg sm:block hidden" variant="ghost">
+              <div class="flex items-center gap-2">
+                <UIcon name="ic:sharp-shopping-cart" class="text-2xl"/>
+                <span>Buy Now</span>
+              </div>
+            </UButton>
+            <Icon name="ic:sharp-shopping-cart" size="25" class="bg-primary sm:hidden"/>
+          </div>
+
           <UDropdown v-if="authData" :items="userDropdownItems" :popper="{ placement: 'bottom-start' }">
             <UAvatar
                 :src="authData?.user.image"
@@ -101,7 +128,7 @@ const Logo = () => (
                 size="md"
             />
           </UDropdown>
-          <UButton v-else label="Sign In" @click="signIn" class="sm:block hidden"/>
+          <!--          <UButton v-else label="Sign In" @click="signIn" class="sm:block hidden"/>-->
 
         </div>
         <div style="grid-area: search">
@@ -118,9 +145,9 @@ const Logo = () => (
     <ClientOnly>
       <USlideover v-model="isOpenToggleMenu" side="left" class="w-80">
         <div class="px-4 py-8 flex flex-col min-h-screen">
-          <div class="flex justify-between items-center mb-16">
+          <div class="mb-16">
             <Logo/>
-            <ColorModeToggle/>
+<!--            <ColorModeToggle/>-->
           </div>
 
           <div class="flex flex-col gap-6 flex-1">

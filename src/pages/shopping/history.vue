@@ -1,7 +1,7 @@
 <script setup>
 definePageMeta({
   title: 'History',
-  type: 'secondary'
+  // type: 'secondary'
 })
 </script>
 
