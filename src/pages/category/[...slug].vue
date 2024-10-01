@@ -2,7 +2,12 @@
 definePageMeta({
   title: 'Category',
   navOrder: 2,
-  type: 'primary'
+  // type: 'primary'
+})
+
+const route = useRoute()
+watchEffect(() => {
+  console.log(route.fullPath)
 })
 </script>
 

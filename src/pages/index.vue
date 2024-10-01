@@ -2,7 +2,7 @@
 definePageMeta({
   title: 'Home',
   navOrder: 1,
-  type: 'primary'
+  // type: 'primary'
 })
 
 </script>

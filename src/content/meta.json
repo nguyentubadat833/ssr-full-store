@@ -1,8 +1,36 @@
 {
-  "pageName": "Shopping world",
+  "pageName": "Vintage Books",
   "contact": {
     "phone": "0965904833",
     "facebook": "",
     "zalo": "0965904833"
-  }
+  },
+  "category": [
+    [
+      {
+        "label": "Special books",
+        "link": "/category/special-books"
+      },
+      {
+        "label": "Books published before 1975",
+        "link": "/category/books-before-1975"
+      }
+    ],
+    [
+      {
+        "label": "Old books",
+        "link": "/category/old-books"
+      },
+      {
+        "label":" New books",
+        "link": "/category/new-books"
+      }
+    ],
+    [
+      {
+        "label": "Comic world",
+        "link": "/category/comic-world"
+      }
+    ]
+  ]
 }
