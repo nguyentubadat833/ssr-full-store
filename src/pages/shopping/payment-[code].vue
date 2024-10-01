@@ -2,7 +2,16 @@
 definePageMeta({
   title: 'Payment',
   // type: 'secondary'
+  middleware: [
+    function (to, from) {
+      if (!to.params?.code){
+        return abortNavigation('Page not found')
+      }
+    },
+  ],
 })
+
+
 
 </script>
 

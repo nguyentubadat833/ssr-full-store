@@ -1,6 +1,7 @@
 <script setup>
 definePageMeta({
   title: 'History',
+  requireAuth: true
   // type: 'secondary'
 })
 </script>

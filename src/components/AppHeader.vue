@@ -41,6 +41,11 @@ const userDropdownItems = ref([
       label: 'Shopping Cart',
       icon: 'ic:sharp-shopping-cart',
       click: async () => await toShoppingCartPage()
+    },
+    {
+      label: "Shopping History",
+      icon: 'ic:baseline-history',
+      click: () => navigateTo('/shopping/history')
     }
   ],
   [{

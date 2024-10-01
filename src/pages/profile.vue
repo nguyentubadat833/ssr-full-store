@@ -2,6 +2,7 @@
 
 definePageMeta({
   title: 'Profile',
+  requireAuth: true
   // type: 'secondary'
 })
 
