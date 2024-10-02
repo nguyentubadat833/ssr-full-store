@@ -16,6 +16,7 @@ const authCardStyleConfig = {
           <span class="text-4xl font-bold text-center">{{route?.meta?.pageName}}</span>
         </div>
         <NuxtPage/>
+
       </UCard>
     </div>
   </div>

@@ -24,8 +24,7 @@ export default NuxtAuthHandler({
                     const user = await findUser({
                         email: email
                     })
-                    console.log('find user', user)
-                    if (user && await verifyPassword(password, user.password_hash)){
+                    if (user && await verifyPassword(password, user.passwordHash)){
                         return {
                             name: user?.profile?.name,
                             email: user.email
@@ -60,7 +59,7 @@ export default NuxtAuthHandler({
                         avatar: user?.image
                     }
                     const newUser = await createUser({
-                        google_id: googleId,
+                        googleId: googleId,
                         profile: profile
                     })
                     console.log('created user: ', newUser)

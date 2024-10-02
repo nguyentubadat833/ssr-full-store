@@ -123,7 +123,8 @@ const Logo = () => (
             <UButton color="orange" label="Category" trailing-icon="i-heroicons-chevron-down-20-solid"
                      icon="ic:baseline-menu"/>
             <template #item="{ item }">
-              <span class="w-full text-left" @click="navigateTo(item.link)">{{ item.label }}</span>
+              <span class="w-full text-left" @click="navigateTo(item.link)"
+                    :class="[{'font-bold': route.fullPath === item.link}]">{{ item.label }}</span>
             </template>
           </UDropdown>
           <!--          <ULink-->

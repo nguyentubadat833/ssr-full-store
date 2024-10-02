@@ -3,9 +3,9 @@
 </script>
 
 <template>
-  <div>
-    management
-  </div>
+<div>
+  category management
+</div>
 </template>
 
 <style scoped>

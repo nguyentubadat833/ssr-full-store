@@ -11,14 +11,14 @@ async function findUser({email, googleId, facebookId}) {
     if (googleId){
         return prismaClient.user.findFirst({
             where: {
-                google_id: googleId
+                googleId: googleId
             }
         })
     }
     if (facebookId){
         return prismaClient.user.findFirst({
             where: {
-                facebook_id: facebookId
+                facebookId: facebookId
             }
         })
     }
