@@ -14,6 +14,12 @@ export default defineNuxtConfig({
         dirs: ['stores']
     },
     app: {
+        head: {
+            meta: [
+                {charset: 'UTF-8'},
+                {name: 'viewport', content: 'width=device-width, initial-scale=1'},
+            ]
+        },
         pageTransition: {name: 'page', mode: 'out-in',},
         layoutTransition: {name: 'layout', mode: 'out-in'},
     },

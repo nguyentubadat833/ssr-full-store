@@ -1,7 +1,6 @@
 import {NuxtAuthHandler} from '#auth'
 import GoogleProvider from 'next-auth/providers/google'
 import CredentialsProvider from 'next-auth/providers/credentials'
-import {verifyPassword} from "~/server/utils/passwordHash.js";
 
 
 const {findUser, createUser} = userRepo

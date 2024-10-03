@@ -34,8 +34,9 @@ async function onRegister() {
         navigateTo('/auth/signIn')
       }, 2000)
     }
+  }).finally(() => {
+    isLoading.value = false
   })
-  isLoading.value = false
 }
 
 </script>

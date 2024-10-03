@@ -4,7 +4,10 @@ export default defineEventHandler(async (event) => {
     const emailReq = body?.email
     if (emailReq && body.password) {
         if (await findUser({email: emailReq})) {
-            setResponseStatus(event, 400, 'This email has been registered')
+            setResponseStatus(event, 400)
+            return errorResponseObject({
+                message: messageUtils.userExist()
+            })
         } else {
             const user = await createUser({
                 email: emailReq,
@@ -13,9 +16,18 @@ export default defineEventHandler(async (event) => {
                     name: body?.name
                 }
             })
+            setResponseStatus(event, 201)
             return user.email
         }
     } else {
-        setResponseStatus(event, 400, "Invalid info")
+        setResponseStatus(event, 400)
+        return errorResponseObject({
+            message: messageUtils.userError({
+                detail: {
+                    vi: 'Email và mật khẩu là bắt buộc',
+                    en: 'Email and password is required'
+                }
+            })
+        })
     }
 })

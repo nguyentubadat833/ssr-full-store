@@ -1,16 +1,17 @@
 <script setup>
 import {object, string} from 'yup'
 
-const isLoading = ref(false)
+const toast = useToast()
 const {signIn, getProviders} = useAuth()
+const {getToastObject} = useNotification
 const providers = await getProviders()
+const isLoading = ref(false)
 
 definePageMeta({
   pageName: 'Sign In',
   layout: 'auth',
   auth: {unauthenticatedOnly: true, navigateAuthenticatedTo: '/'}
 })
-
 
 
 const loginFormSchema = object({
@@ -24,12 +25,22 @@ const loginFormState = reactive({
 
 async function onLogin() {
   isLoading.value = true
-  await signIn("credentials", {
-    // redirect: false,
+  const result = await signIn("credentials", {
+    redirect: false,
     email: loginFormState.email,
     password: loginFormState.password
+  }).finally(() => {
+    isLoading.value = false
   })
-  isLoading.value = false
+  if (!result.error) {
+    await navigateTo('/')
+  } else {
+    toast.add(getToastObject({
+      type: 'error',
+      description: result.error === 'CredentialsSignin' ? 'Tên người dùng hoặc mật khẩu không đúng' : 'Lỗi đăng nhập'
+    }))
+  }
+
 }
 
 

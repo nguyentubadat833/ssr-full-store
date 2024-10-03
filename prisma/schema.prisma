@@ -14,6 +14,7 @@ model User {
   googleId      String?
   facebookId    String?
   profile       Json?
+  status        Int       @default(1)
   createdAt     DateTime  @default(now())
   lastUpdatedAt DateTime?
 }
@@ -36,7 +37,8 @@ model Log {
 model Category {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   code          String
-  name          String
+  name          Json
+  alias         Json
   product       Product[]
   status        Int       @default(1) // 1. Sử dụng
   createdBy     String
@@ -47,8 +49,9 @@ model Category {
 
 model Product {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  description   String?
+  name          Json
+  alias         Json
+  description   Json
   price         Float
   stock         Stock[]
   Category      Category?       @relation(fields: [categoryId], references: [id])
