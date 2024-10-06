@@ -17,25 +17,34 @@ const categoryCurrent = reactive({
 //   headers: headers
 // })
 
-await useApiConfig({
-  endpoint: '/api/category/select'
+const categoryData = await useApiConfig({
+  endpoint: '/api/category/select',
+  params: {
+    selectType: 'selectMany'
+  }
 })
 
-async function mapCategoryInfo(categoryCode) {
-  if (isString(categoryCode)) {
-    const data = await useApiConfig({
+async function mapCategoryInfo(object) {
+  console.log(object)
+  let data
+  if (isString(object)) {
+    data = await useApiConfig({
       endpoint: '/api/category/select',
       params: {
         selectType: 'selectByCode',
-        categoryCode: categoryCode
+        categoryCode: object
       }
     })
-    if (data){
-      categoryCurrent.code = data?.code
-      categoryCurrent.name = data?.name
-      categoryCurrent.alias = data?.alias
-      categoryCurrent.createdBy = data?.createdBy
+  } else {
+    if (isObject(object)) {
+      data = object
     }
+  }
+  if (data) {
+    categoryCurrent.code = data?.code
+    categoryCurrent.name = data?.name
+    categoryCurrent.alias = data?.alias
+    categoryCurrent.createdBy = data?.createdBy
   }
 }
 
@@ -48,10 +57,35 @@ async function createCategory() {
   }).finally(() => {
     isLoading.value = false
   })
-  if (categoryCode){
+  if (categoryCode) {
     await mapCategoryInfo(categoryCode)
   }
 }
+
+const columns = [{
+  key: 'code',
+  label: 'Code'
+}, {
+  key: 'name',
+  label: 'Name',
+  sortable: true
+}, {
+  key: 'alias',
+  label: 'Alias'
+}, {
+  key: 'createdBy',
+  label: 'Create by'
+}, {
+  key: 'createdAt',
+  label: 'Create at',
+  sortable: true
+}]
+
+const sort = ref({
+  column: 'createdAt',
+  direction: 'desc'
+})
+
 
 </script>
 
@@ -74,6 +108,11 @@ async function createCategory() {
         <UButton :loading="isLoading" label="Save" @click="createCategory" block/>
       </UFormGroup>
     </UForm>
+    <UTable :columns="columns" :rows="categoryData || []" @select="mapCategoryInfo" class="mt-10 max-h-96">
+      <template #createdAt-data="{row}">
+        <NuxtTime :datetime="row.createdAt" year="numeric" month="long" day="numeric" locale="en"/>
+      </template>
+    </UTable>
   </div>
 </template>
 

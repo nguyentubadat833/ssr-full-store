@@ -40,12 +40,13 @@ export default defineNuxtConfig({
     },
 
     modules: [
-        "nuxt-lodash",
-        '@sidebase/nuxt-auth',
-        "@prisma/nuxt",
-        '@nuxt/ui',
-        '@nuxt/content',
-        'nuxt-file-storage'
+      "nuxt-lodash",
+      '@sidebase/nuxt-auth',
+      "@prisma/nuxt",
+      '@nuxt/ui',
+      '@nuxt/content',
+      'nuxt-file-storage',
+      'nuxt-time',
     ],
     
     fileStorage: {
