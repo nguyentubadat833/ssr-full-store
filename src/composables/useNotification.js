@@ -1,3 +1,5 @@
+const id = ref(0)
+
 function getToastObject({
                             type = 'success',
                             successTitle = 'Success',
@@ -8,10 +10,12 @@ function getToastObject({
                             timeout = 2000,
                             actions,
                         } = {}) {
+    const id = ref(0)
     let object = {
         timeout: timeout,
     }
     if (type === 'success') {
+        object.id = ++id.value
         object.title = successTitle
         object.icon = successIcon
         object.color = 'green'
@@ -28,6 +32,7 @@ function getToastObject({
     if (description) {
         object.description = description
     }
+    console.log(object)
     return object
 }
 

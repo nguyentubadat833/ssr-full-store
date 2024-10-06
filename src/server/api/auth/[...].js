@@ -85,7 +85,7 @@ export default NuxtAuthHandler({
         },
         /* on session retrival */
         async session({session, user, token}) {
-            console.log('session', session)
+            // console.log('session', session)
             return session
         },
         /* on JWT token creation or mutation */

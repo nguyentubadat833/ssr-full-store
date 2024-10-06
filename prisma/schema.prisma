@@ -9,6 +9,7 @@ datasource db {
 
 model User {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  role          String?
   email         String?
   passwordHash  String?
   googleId      String?
@@ -36,9 +37,10 @@ model Log {
 
 model Category {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  code          String
-  name          Json
-  alias         Json
+  code          String    @unique
+  name          String
+  alias         String
+  translate     Json?
   product       Product[]
   status        Int       @default(1) // 1. Sử dụng
   createdBy     String
@@ -49,10 +51,12 @@ model Category {
 
 model Product {
   id            String          @id @default(auto()) @map("_id") @db.ObjectId
-  name          Json
-  alias         Json
-  description   Json
+  code          String          @unique
+  name          String
+  alias         String
+  description   String
   price         Float
+  translate     Json?
   stock         Stock[]
   Category      Category?       @relation(fields: [categoryId], references: [id])
   categoryId    String?         @db.ObjectId

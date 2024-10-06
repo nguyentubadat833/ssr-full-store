@@ -47,7 +47,7 @@ export default defineNuxtConfig({
         '@nuxt/content',
         'nuxt-file-storage'
     ],
-
+    
     fileStorage: {
         mount: process.env.NUXT_UPLOAD_URL
     },

@@ -52,28 +52,37 @@ export default async function ({
                                    toastSuccessObjectCustom,
                                    toastErrorObjectCustom
                                } = {}) {
+    let result
     const toast = useToast()
     const {getToastObject, mapCustomToastObject} = useNotification
     if (!endpoint) {
         throw new Error('Endpoint is required')
     }
-    return await $fetch(endpoint, {
+
+    const requestOptions = () => {
+        const result = {}
+        result.method = method
+        // result.headers = headers
+        if (isObject(params)) {
+            result.params = params
+        }
+        if (isObject(body)) {
+            result.body = body
+        }
+        return result
+    }
+
+    await $fetch(endpoint, {
+        ...requestOptions(),
         onRequest({options}) {
-            options.method = method
-            if (params) {
-                options.params = params
-            }
-            if (isObject(body)) {
-                options.body = body
-            }
             if (isFunction(requestOptionsCustom)) {
                 requestOptionsCustom(options)
             }
         },
-        onResponse({response}) {
-            console.log(response)
+        onResponse({response, request}) {
             if (isUseDefaultProcessOnResponse) {
                 if (response.ok === true) {
+                    result = response._data
                     if (isFunction(callbackMethodOnSuccess)) {
                         callbackMethodOnSuccess()
                     }
@@ -99,7 +108,6 @@ export default async function ({
                         })
                         if (isObject(toastErrorObjectCustom)) {
                             toastObject = mapCustomToastObject(toastObject, toastErrorObjectCustom)
-
                         }
                         toast.add(toastObject)
                     }
@@ -112,5 +120,6 @@ export default async function ({
 
         }
     })
+    return result ? result : null
 
 }

@@ -21,7 +21,25 @@ async function update(data) {
     });
 }
 
+async function selectByCode (code)  {
+    return prismaClient.category.findUnique({
+        where: {
+            code: code
+        }
+    })
+}
+
+async function selectManyByStatus({status = 1} = {}) {
+    return prismaClient.category.findMany({
+        where: {
+            status: status
+        }
+    })
+}
+
 export default {
     create,
-    update
+    update,
+    selectByCode,
+    selectManyByStatus
 }

@@ -5,7 +5,6 @@ const isLoading = ref(false)
 
 definePageMeta({
   pageName: 'Sign Up',
-  layout: 'auth',
   auth: {unauthenticatedOnly: true, navigateAuthenticatedTo: '/'}
 })
 

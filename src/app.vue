@@ -1,13 +1,23 @@
 <template>
   <div>
-    <NuxtLayout>
+    <NuxtLayout :name="layoutName">
       <NuxtPage/>
     </NuxtLayout>
-    <UNotifications />
+    <ClientOnly>
+      <UNotifications />
+    </ClientOnly>
   </div>
 </template>
 <script setup>
-
+const route = useRoute()
+const layoutName = computed(() => {
+  if (route.fullPath.startsWith('/console')){
+    return 'console'
+  }
+  if (route.fullPath.startsWith('/auth')){
+    return 'auth'
+  }
+})
 </script>
 <style>
 .page-enter-active,
