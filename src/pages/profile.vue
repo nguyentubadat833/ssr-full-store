@@ -1,5 +1,8 @@
 <script setup>
 
+const {handleFileInput, files} = useFileStorage()
+const {data: userData} = useAuth()
+const route = useRoute()
 definePageMeta({
   title: {
     vi: 'Hồ sơ cá nhân',
@@ -9,9 +12,17 @@ definePageMeta({
   // type: 'secondary'
 })
 
-const {handleFileInput, files} = useFileStorage()
-const {data: userData} = useAuth()
-console.log(userData.value)
+defineI18nRoute({
+  paths: {
+    vi: '/ho-so',
+    en: '/profile'
+  }
+})
+
+useHead({
+  title: getPageTitle(route)
+})
+
 const infoFormState = reactive({
   name: userData?.value?.user?.name || '',
   email: userData?.value?.user?.email || '',

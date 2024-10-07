@@ -1,7 +1,7 @@
 <script setup lang="tsx">
 
 const route = useRoute()
-const {locale} = useI18n()
+const {locale, t} = useI18n()
 const {navLinksPrimary, navLinksSecondary} = useNav()
 const {data: authData, signOut, signIn} = useAuth()
 const {pageName, contact, category} = await queryContent('/meta').findOne()
@@ -112,8 +112,8 @@ const Logo = () => (
                     @click="navigateTo(item.link)">{{ item.text }}</span>
             </div>
             <div class="h-5 flex items-center gap-2">
-              <span v-if="!authData" class="hover:underline cursor-pointer" @click="signIn">{{signInLabel[`${locale}`]}}</span>
-              <span v-else class="hover:underline cursor-pointer" @click="signOut">{{signOutLabel[`${locale}`]}}</span>
+              <span v-if="!authData" class="hover:underline cursor-pointer" @click="signIn">{{t('signIn')}}</span>
+              <span v-else class="hover:underline cursor-pointer" @click="signOut">{{t('signOut')}}</span>
               <ColorModeToggle/>
             </div>
           </div>
