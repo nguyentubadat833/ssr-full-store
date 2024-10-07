@@ -19,9 +19,9 @@ const layoutName = computed(() => {
     return 'auth'
   }
 })
-console.log(route.meta.title[`${locale.value}`])
+
 useHead({
-  title: route.meta.title[`${locale.value}`]
+  // titleTemplate: route.meta.title[`${locale.value}`]
 })
 </script>
 <style>

@@ -1,4 +1,5 @@
 <script setup>
+const route = useRoute()
 
 definePageMeta({
   title: {
@@ -15,9 +16,9 @@ defineI18nRoute({
   }
 })
 
-const route = useRoute()
-
-console.log(route.meta)
+useHead({
+    title: getPageTitle(route)
+})
 
 </script>
 

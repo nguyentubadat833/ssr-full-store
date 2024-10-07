@@ -1,4 +1,5 @@
 <script setup>
+const route = useRoute()
 definePageMeta({
   title: {
     vi: 'Trang chủ',
@@ -7,6 +8,10 @@ definePageMeta({
   navOrder: 1,
   // type: 'primary'
 })
+useHead({
+  title: getPageTitle(route)
+})
+
 
 </script>
 

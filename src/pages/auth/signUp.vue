@@ -2,6 +2,7 @@
 import {object, string} from "yup";
 
 const isLoading = ref(false)
+const route = useRoute()
 const {locale} = useI18n()
 definePageMeta({
   title: {
@@ -9,6 +10,10 @@ definePageMeta({
     en: 'Sign Up'
   },
   auth: {unauthenticatedOnly: true, navigateAuthenticatedTo: '/'}
+})
+
+useHead({
+  title: getPageTitle(route)
 })
 
 const registerFormSchema = object({

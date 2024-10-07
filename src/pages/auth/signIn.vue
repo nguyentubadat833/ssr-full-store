@@ -1,6 +1,7 @@
 <script setup>
 import {object, string} from 'yup'
 
+const route = useRoute()
 const toast = useToast()
 const {locale} = useI18n()
 const {signIn, getProviders} = useAuth()
@@ -16,6 +17,9 @@ definePageMeta({
   auth: {unauthenticatedOnly: true, navigateAuthenticatedTo: '/'}
 })
 
+useHead({
+  title: getPageTitle(route)
+})
 
 const loginFormSchema = object({
   email: string().email('Invalid email').required('Required'),
@@ -80,7 +84,6 @@ async function onLogin() {
   }
 
 }
-
 
 </script>
 

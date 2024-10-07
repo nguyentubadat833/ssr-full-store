@@ -1,4 +1,5 @@
 <script setup>
+const route = useRoute()
 definePageMeta({
   title: {
     vi: 'Liên hệ',
@@ -12,6 +13,10 @@ defineI18nRoute({
     vi: '/lien-he',
     en: '/contact-us'
   }
+})
+
+useHead({
+  title: getPageTitle(route)
 })
 </script>
 
