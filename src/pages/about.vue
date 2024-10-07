@@ -1,9 +1,24 @@
 <script setup>
+
 definePageMeta({
-  title: 'About',
+  title: {
+    vi: 'Về chúng tôi',
+    en: 'About Us'
+  },
   navOrder: 2,
-  type: 'secondary'
+  type: 'secondary',
 })
+defineI18nRoute({
+  paths: {
+    vi: '/ve-chung-toi',
+    en: '/about-us'
+  }
+})
+
+const route = useRoute()
+
+console.log(route.meta)
+
 </script>
 
 <template>

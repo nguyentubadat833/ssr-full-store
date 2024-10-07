@@ -1,7 +1,10 @@
 <script setup>
 
 definePageMeta({
-  title: 'Profile',
+  title: {
+    vi: 'Hồ sơ cá nhân',
+    en: 'Profile'
+  },
   requireAuth: true
   // type: 'secondary'
 })

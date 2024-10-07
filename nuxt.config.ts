@@ -1,4 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+import site from "./site";
+
 export default defineNuxtConfig({
     devServer: {
         port: 3005
@@ -10,8 +12,12 @@ export default defineNuxtConfig({
         './base'
     ],
     imports: {
-        // Auto-import pinia stores defined in `~/stores`
-        dirs: ['stores']
+        dirs: [
+            'stores',
+            'composables',
+            'composables/*/index.{ts,js,mjs,mts}',
+            'composables/**/**'
+        ]
     },
     app: {
         head: {
@@ -47,16 +53,31 @@ export default defineNuxtConfig({
       '@nuxt/content',
       'nuxt-file-storage',
       'nuxt-time',
+      '@nuxtjs/i18n',
     ],
-    
+    i18n: {
+        locales: site.i18n.locales,
+        defaultLocale: site.i18n.defaultLocale,
+
+        // customRoutes: 'config',
+        // pages: site.i18n.pages,
+
+        strategy: "prefix_except_default",
+        langDir: './i18n/lang/',
+        lazy: true,
+        vueI18n: '~/i18n/i18n.config.ts',
+        detectBrowserLanguage: {
+            useCookie: true,
+            cookieKey: 'i18n_redirected',
+            onlyOnRoot: true,
+        }
+    },
     fileStorage: {
         mount: process.env.NUXT_UPLOAD_URL
     },
-
     prisma: {
         installStudio: false
     },
-
     auth: {
         provider: {
             type: 'authjs',
@@ -65,7 +86,6 @@ export default defineNuxtConfig({
             addDefaultCallbackUrl: true
         },
     },
-
     vite: {
         css: {
             preprocessorOptions: {
@@ -73,9 +93,13 @@ export default defineNuxtConfig({
                     silenceDeprecations: ["legacy-js-api"]
                 }
             }
+        },
+        resolve: {
+            alias: {
+                ".prisma/client/index-browser": "./node_modules/.prisma/client/index-browser.js"
+            }
         }
     },
-
     nitro: {
         experimental: {
             websocket: true

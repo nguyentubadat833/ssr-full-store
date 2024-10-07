@@ -1,8 +1,17 @@
 <script setup>
 definePageMeta({
-  title: 'Contact',
+  title: {
+    vi: 'Liên hệ',
+    en: 'Contact'
+  },
   navOrder: 1,
   type: 'secondary'
+})
+defineI18nRoute({
+  paths: {
+    vi: '/lien-he',
+    en: '/contact-us'
+  }
 })
 </script>
 

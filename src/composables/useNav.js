@@ -2,9 +2,28 @@ import site from "~~/site.js";
 
 export default function () {
     const routes = useRouter().getRoutes()
+    const {locale, defaultLocale} = useI18n()
+    const getLangCodeArray = computed(() => {
+        let result = []
+        const locales = site?.i18n?.locales
+        if (Array.isArray(locales) && locales.length > 0) {
+            locales.forEach(el => {
+                result.push(el.code)
+            })
+        }
+        return result
+    })
 
     const navLinksFromRouter = routes
         .filter((route) => route.meta.hidden !== true)
+        .filter((route) => {
+            if (locale.value === defaultLocale) {
+                return !getLangCodeArray.value.some(lang => route.path.startsWith(`/${lang}`));
+            } else {
+                console.log(locale.value)
+                return route.path.startsWith(`/${locale.value}`);
+            }
+        })
         .filter(
             (route) => route.name && route.name[0] !== route.name[0].toUpperCase(),
         )
@@ -18,7 +37,7 @@ export default function () {
         )
         .map((route) => {
             return {
-                text: route.meta.title,
+                text: route.meta.title[`${locale.value}`],
                 link: route.meta.name || route.path,
                 icon: route.meta.icon,
                 type: route.meta.type,
@@ -38,7 +57,7 @@ export default function () {
         return navLinks.value.filter((navLink) => navLink.type === 'secondary')
     })
 
-    return{
+    return {
         navLinksPrimary,
         navLinksSecondary,
     }

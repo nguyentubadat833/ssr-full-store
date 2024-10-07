@@ -2,9 +2,12 @@
 import {object, string} from "yup";
 
 const isLoading = ref(false)
-
+const {locale} = useI18n()
 definePageMeta({
-  pageName: 'Sign Up',
+  title: {
+    vi: 'Đăng ký',
+    en: 'Sign Up'
+  },
   auth: {unauthenticatedOnly: true, navigateAuthenticatedTo: '/'}
 })
 
@@ -12,6 +15,41 @@ const registerFormSchema = object({
   email: string().email('Invalid email').required('Required'),
   password: string().required('Required')
 })
+
+const labelTranslate = {
+  name: {
+    vi: 'Họ và tên',
+    en: 'Name'
+  },
+  email: {
+    vi: 'Địa chỉ email',
+    en: 'Email'
+  },
+  password: {
+    vi: 'Mật khẩu',
+    en: 'Password'
+  },
+  forgotPassword: {
+    vi: 'Quên mật khẩu',
+    en: 'Forgot Password'
+  },
+  continue: {
+    vi: 'Tiếp tục',
+    en: 'Continue'
+  },
+  or: {
+    vi: 'Lựa chọn khác',
+    en: 'OR'
+  },
+  submit: {
+    vi: 'Đăng ký',
+    en: 'Submit'
+  },
+  signIn: {
+    vi: 'Đăng nhập',
+    en: 'Sign In'
+  }
+}
 
 const registerFormState = reactive({
   name: '',
@@ -43,21 +81,21 @@ async function onRegister() {
 <template>
   <div>
     <UForm :state="registerFormState" :schema="registerFormSchema" class="space-y-7" @submit="onRegister">
-      <UFormGroup label="Name" name="name">
+      <UFormGroup :label="labelTranslate.name[`${locale}`]" name="name">
         <UInput v-model="registerFormState.name" placeholder="Your name"/>
       </UFormGroup>
-      <UFormGroup label="Email" name="email">
+      <UFormGroup :label="labelTranslate.email[`${locale}`]" name="email">
         <UInput v-model="registerFormState.email" placeholder="Your email"/>
       </UFormGroup>
 
-      <UFormGroup label="Password" name="password">
+      <UFormGroup :label="labelTranslate.password[`${locale}`]" name="password">
         <UInput v-model="registerFormState.password" type="password" placeholder="Your password"/>
       </UFormGroup>
-      <UButton :loading="isLoading" type="submit" label="Submit" block/>
+      <UButton :loading="isLoading" type="submit" :label="labelTranslate.submit[`${locale}`]" block/>
     </UForm>
-    <UDivider label="OR" class="my-6"/>
+    <UDivider :label="labelTranslate.or[`${locale}`]" class="my-6"/>
     <div class="space-y-6">
-      <UButton label="Sign In" color="white" block @click="navigateTo('/auth/signIn')"/>
+      <UButton :label="labelTranslate.signIn[`${locale}`]" color="white" block @click="navigateTo('/auth/signIn')"/>
     </div>
   </div>
 </template>

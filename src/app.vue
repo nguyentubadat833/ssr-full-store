@@ -9,6 +9,7 @@
   </div>
 </template>
 <script setup>
+const {locale, defaultLocale} = useI18n()
 const route = useRoute()
 const layoutName = computed(() => {
   if (route.fullPath.startsWith('/console')){
@@ -17,6 +18,10 @@ const layoutName = computed(() => {
   if (route.fullPath.startsWith('/auth')){
     return 'auth'
   }
+})
+console.log(route.meta.title[`${locale.value}`])
+useHead({
+  title: route.meta.title[`${locale.value}`]
 })
 </script>
 <style>

@@ -1,6 +1,7 @@
 <script setup lang="tsx">
 
 const route = useRoute()
+const {locale} = useI18n()
 const {navLinksPrimary, navLinksSecondary} = useNav()
 const {data: authData, signOut, signIn} = useAuth()
 const {pageName, contact, category} = await queryContent('/meta').findOne()
@@ -8,7 +9,7 @@ const {pageName, contact, category} = await queryContent('/meta').findOne()
 const isOpenToggleMenu = ref(false)
 const categorySlideover = computed(() => {
   if (Array.isArray(category) && category.length > 0) {
-    let result = []
+    let result: any[] = []
     category.forEach(el => {
       if (Array.isArray(el) && el.length > 0) {
         el.forEach(e => {
@@ -20,6 +21,15 @@ const categorySlideover = computed(() => {
   }
   return []
 })
+
+const signInLabel = {
+  vi: 'Đăng nhập',
+  en: 'Sign In'
+}
+const signOutLabel = {
+  vi: 'Thoát',
+  en: 'Logout'
+}
 
 async function toShoppingCartPage() {
   await navigateTo('/shopping/cart')
@@ -102,8 +112,8 @@ const Logo = () => (
                     @click="navigateTo(item.link)">{{ item.text }}</span>
             </div>
             <div class="h-5 flex items-center gap-2">
-              <span v-if="!authData" class="hover:underline cursor-pointer" @click="signIn">Sign In</span>
-              <span v-else class="hover:underline cursor-pointer" @click="signOut">Logout</span>
+              <span v-if="!authData" class="hover:underline cursor-pointer" @click="signIn">{{signInLabel[`${locale}`]}}</span>
+              <span v-else class="hover:underline cursor-pointer" @click="signOut">{{signOutLabel[`${locale}`]}}</span>
               <ColorModeToggle/>
             </div>
           </div>

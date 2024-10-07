@@ -1,6 +1,9 @@
 <script setup>
 definePageMeta({
-  title: 'Home',
+  title: {
+    vi: 'Trang chủ',
+    en: 'Home'
+  },
   navOrder: 1,
   // type: 'primary'
 })

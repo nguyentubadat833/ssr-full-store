@@ -1,8 +1,11 @@
 <script setup>
 
 definePageMeta({
-  pageName: 'Category Management'
+  pageName: 'Category Management',
+  hidden: true
 })
+
+const {findByCode, data, create} = useCategory
 
 const isLoading = ref(false)
 const categoryCurrent = reactive({
@@ -12,29 +15,10 @@ const categoryCurrent = reactive({
   createdBy: '',
 })
 
-// const headers = useRequestHeaders(['cookie'])
-// await useFetch('/api/category/select', {
-//   headers: headers
-// })
-
-const categoryData = await useApiConfig({
-  endpoint: '/api/category/select',
-  params: {
-    selectType: 'selectMany'
-  }
-})
-
 async function mapCategoryInfo(object) {
-  console.log(object)
   let data
   if (isString(object)) {
-    data = await useApiConfig({
-      endpoint: '/api/category/select',
-      params: {
-        selectType: 'selectByCode',
-        categoryCode: object
-      }
-    })
+    data = await findByCode(object)
   } else {
     if (isObject(object)) {
       data = object
@@ -50,11 +34,7 @@ async function mapCategoryInfo(object) {
 
 async function createCategory() {
   isLoading.value = true
-  const categoryCode = await useApiConfig({
-    endpoint: '/api/category/create',
-    method: 'POST',
-    body: categoryCurrent
-  }).finally(() => {
+  const categoryCode = await create(categoryCurrent).finally(() => {
     isLoading.value = false
   })
   if (categoryCode) {
@@ -108,7 +88,7 @@ const sort = ref({
         <UButton :loading="isLoading" label="Save" @click="createCategory" block/>
       </UFormGroup>
     </UForm>
-    <UTable :columns="columns" :rows="categoryData || []" @select="mapCategoryInfo" class="mt-10 max-h-96">
+    <UTable :columns="columns" :rows="data || []" @select="mapCategoryInfo" class="mt-10 max-h-96">
       <template #createdAt-data="{row}">
         <NuxtTime :datetime="row.createdAt" year="numeric" month="long" day="numeric" locale="en"/>
       </template>

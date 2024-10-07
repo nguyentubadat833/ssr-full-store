@@ -1,0 +1,51 @@
+export default defineI18nConfig(() => ({
+    legacy: false,
+    locale: 'en',
+    fallbackLocale: 'en',
+    // messages: {
+    //     en: {
+    //         home: 'Home',
+    //         news: 'News',
+    //         project: 'Project',
+    //         concept: 'Concept',
+    //         contact: 'Contact',
+    //         about: 'About Me',
+    //         sub_htl: 'Subscribe to HTL Architects',
+    //         back_to_top: 'Back to top',
+    //         office: 'Office',
+    //         store: 'Store',
+    //         apartment: 'Apartment',
+    //         hotel: 'Hotel',
+    //         resort: 'Resort',
+    //         contact_form: 'Contact Form',
+    //         contact_letter: "Please leave your information, we will contact you as soon as possible, or quickly contact us by phone number: +84971168578 or email: ",
+    //         contact_name: 'Name',
+    //         contact_email: 'Email',
+    //         contact_phone: 'Phone',
+    //         contact_title: 'Title',
+    //         contact_message: 'Message'
+    //     },
+    //     vi: {
+    //         home: 'Trang chủ',
+    //         news: 'Bài mới',
+    //         project: 'Dự án',
+    //         concept: 'Ý tưởng',
+    //         contact: 'Liên hệ',
+    //         about: 'Giới thiệu',
+    //         sub_htl: 'Đăng ký theo dõi HTL Architects',
+    //         back_to_top: 'Trở về đầu trang',
+    //         office: 'Văn phòng',
+    //         store: 'Cửa hàng',
+    //         apartment: 'Căn hộ',
+    //         hotel: 'Khách sạn',
+    //         resort: 'Khu nghỉ dưỡng',
+    //         contact_form: 'Mẫu liên hệ',
+    //         contact_letter: "Hãy để lại thông tin của bạn, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất, hoặc liên hệ nhanh với chúng tôi qua số điện thoại: +84971168578 hoặc email: ",
+    //         contact_name: 'Tên đầy đủ',
+    //         contact_email: 'Địa chỉ email',
+    //         contact_phone: 'Số điện thoại',
+    //         contact_title: 'Tiêu đề',
+    //         contact_message: 'Lời nhắn'
+    //     }
+    // }
+}))
