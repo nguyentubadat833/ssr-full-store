@@ -7,7 +7,7 @@ export default {
     password: 'Mật khẩu',
     forgotPassword: 'Quên mật khẩu',
     continue: 'Tiếp tục',
-    submit: 'Đăng ký',
+    submit: 'Tiếp tục',
     or: 'Hoặc',
     continueWithGoogle: 'Đăng nhập Google',
     backToHome: 'Trở về trang chủ',

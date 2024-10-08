@@ -2,6 +2,7 @@
 
 const {handleFileInput, files} = useFileStorage()
 const {data: userData} = useAuth()
+const {t} = useI18n()
 const route = useRoute()
 definePageMeta({
   title: {
@@ -57,6 +58,10 @@ async function upload() {
   }
 }
 
+function updateProfile() {
+
+}
+
 </script>
 
 <template>
@@ -69,32 +74,31 @@ async function upload() {
               alt="Avatar" size="3xl"
           />
         </UDropdown>
-        <div class="flex items-center gap-3" v-if="Array.isArray(files) && files.length > 0">
-          <p class="truncate max-w-40">{{ files[0]?.name }}</p>
-          <UButton @click="upload" label="Submit"/>
-        </div>
+        <ClientOnly>
+          <div class="flex items-center gap-3" v-if="Array.isArray(files) && files.length > 0">
+            <p class="truncate max-w-40">{{ files[0]?.name }}</p>
+            <UButton @click="upload" :label="t('submit')"/>
+          </div>
+        </ClientOnly>
 
-        <UForm :state="infoFormState" class="space-y-6 w-full sm:px-10 mt-10">
-          <UFormGroup label="Name" name="name">
+        <UForm :state="infoFormState" class="space-y-6 w-full sm:px-10 mt-10" @submit="updateProfile">
+          <UFormGroup :label="t('name')" name="name">
             <UInput v-model="infoFormState.name"/>
           </UFormGroup>
-          <UFormGroup label="Email" name="email">
+          <UFormGroup :label="t('email')" name="email">
             <UInput v-model="infoFormState.email"/>
           </UFormGroup>
-          <UFormGroup label="Password" class="">
+          <UFormGroup :label="t('password')" class="">
             <UInput type="password" v-model="infoFormState.newPassword" placeholder="Enter new password" class="mb-3"/>
             <UInput v-if="infoFormState.newPassword" type="password" v-model="infoFormState.retypeNewPassword"
                     placeholder="Retype new password" class="mb-3"/>
             <UInput v-if="infoFormState.newPassword && infoFormState.newPassword === infoFormState.retypeNewPassword"
                     type="password" v-model="infoFormState.passwordCurrent" placeholder="Enter password current"/>
           </UFormGroup>
-          <div>
-            <UButton type="submit" block class="mt-10">
-              Submit
-            </UButton>
-          </div>
+          <ClientOnly>
+            <UButton type="submit" :label="t('submit')" class="mt-10" block />
+          </ClientOnly>
         </UForm>
-
       </div>
     </UCard>
 
