@@ -10,5 +10,6 @@ export default {
     submit: 'Submit',
     or: 'OR',
     continueWithGoogle: 'Continue with Google',
-    backToHome: 'Back To Home'
+    backToHome: 'Back To Home',
+    buyNow: 'Buy Now'
 }

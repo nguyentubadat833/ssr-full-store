@@ -10,5 +10,6 @@ export default {
     submit: 'Đăng ký',
     or: 'Hoặc',
     continueWithGoogle: 'Đăng nhập Google',
-    backToHome: 'Trở về trang chủ'
+    backToHome: 'Trở về trang chủ',
+    buyNow: 'Giỏ hàng'
 }

@@ -121,17 +121,6 @@ async function switchLang(lang: string) {
                     :class="[{'font-bold': route.fullPath === item.link}]">{{ item.label }}</span>
             </template>
           </UDropdown>
-          <!--          <ULink-->
-          <!--              v-for="(navLink, index) in navLinksPrimary"-->
-          <!--              :key="index"-->
-          <!--              :label="navLink.text"-->
-          <!--              :to="navLink.link"-->
-          <!--              variant="link"-->
-          <!--              class="hover:text-primary underline-offset-8 font-medium md:block hidden"-->
-          <!--              active-class="text-primary underline"-->
-          <!--              exact-->
-          <!--          >{{ navLink.text }}-->
-          <!--          </ULink>-->
         </div>
         <div style="grid-area: secondary-menu" class="flex items-center gap-3">
           <!--          <ColorModeToggle class="sm:block hidden"/>-->
@@ -139,7 +128,7 @@ async function switchLang(lang: string) {
             <UButton class="rounded-lg md:block hidden" variant="ghost">
               <div class="flex items-center gap-2">
                 <UIcon name="ic:sharp-shopping-cart" class="text-2xl"/>
-                <span class="text-base">Buy Now</span>
+                <span class="text-base">{{t('buyNow')}}</span>
               </div>
             </UButton>
             <Icon name="ic:sharp-shopping-cart" size="25" class="bg-primary md:hidden"/>
