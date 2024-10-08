@@ -2,10 +2,22 @@
 
 const route = useRoute()
 const switchLocalePath = useSwitchLocalePath()
-const {locale, setLocale, t} = useI18n()
+const {data} = useCategory
+const {locale, locales, setLocale, t} = useI18n()
 const {navLinksSecondary} = useNav()
 const {data: authData, signOut, signIn} = useAuth()
 const {pageName, contact, category} = await queryContent('/meta').findOne()
+
+const {data: categoryData} = await useAsyncData('category-full', () => data(), {
+  transform: (input) => {
+    let result = []
+    result.push(input)
+    return result
+  }
+})
+
+console.log(categoryData.value)
+
 
 const isOpenToggleMenu = ref(false)
 const categorySlideover = computed(() => {
@@ -71,15 +83,28 @@ async function switchLang(lang: string) {
   await navigateTo(path)
 }
 
-// const localePath = useLocalePath()
-// console.log(localePath('shopping-cart'))
+const items = computed(() => {
+  let result = []
+  const items = [...locales.value]
+  items.forEach(el => {
+    if (el.code === 'en') {
+      el.icon = 'flag:us-4x3'
+      el.label = 'EN'
+    } else if (el.code === 'vi') {
+      el.icon = 'flag:vn-4x3'
+      el.label = 'VIE'
+    }
+  })
+  result.push(items)
+  return result
+})
 
 </script>
 
 <template>
   <nav>
     <div class="bg-orange-400">
-      <div class="max-w-[70rem] mx-auto py-2 sm:px-4 pl-3">
+      <div class="max-w-[70rem] mx-auto py-2 sm:px-4 px-3">
         <div class="flex justify-between">
           <div class="flex items-center gap-1">
             <Icon name="ic:baseline-local-phone" size="18" class="text-zinc-700"/>
@@ -91,17 +116,23 @@ async function switchLang(lang: string) {
                     :class="{'underline font-bold': route.fullPath === item?.link}"
                     @click="navigateTo(item.link)">{{ item.text }}</span>
             </div>
-            <div class="h-5 flex items-center gap-2">
+            <div class="h-5 md:flex items-center gap-2 hidden">
               <ClientOnly>
                 <div class="hover:underline cursor-pointer">
                   <NuxtLinkLocale v-if="!authData" to="auth-signIn"> {{ t('signIn') }}</NuxtLinkLocale>
                   <NuxtLinkLocale v-else to="auth-signUp"> {{ t('signOut') }}</NuxtLinkLocale>
                 </div>
                 <ColorModeToggle/>
-                <div class="cursor-pointer hover:underline">
-                  <span v-if="locale !== 'en'" @click="switchLang('en')">{{ useToUpper('en') }}</span>
-                  <span v-else @click="switchLang('vi')">{{ useToUpper('vi') }}</span>
-                </div>
+                <UDropdown :items="items" :popper="{ arrow: true }" class="flex items-center">
+                  <template #item="{item}">
+                    <div class="flex items-center gap-3 w-full" @click="switchLang(item.code)">
+                      <Icon :name="item.icon"/>
+                      <span>{{ item.name }}</span>
+                    </div>
+                  </template>
+                  <Icon v-if="locale === 'en'" name="flag:us-4x3" size="20"/>
+                  <Icon v-else name="flag:vn-4x3" size="20"/>
+                </UDropdown>
               </ClientOnly>
             </div>
           </div>
@@ -116,15 +147,18 @@ async function switchLang(lang: string) {
         <div style="grid-area: primary-menu" class="flex justify-center py-4">
           <!--          <UButton icon="ic:baseline-menu" class="w-9 flex justify-center md:hidden" @click="isOpenToggleMenu = true"/>-->
           <UButton icon="ic:baseline-menu" class="w-9 flex justify-center md:hidden" @click="isOpenToggleMenu = true"/>
-          <UDropdown :items="[...category]" :popper="{ placement: 'bottom-start' }" class="md:block hidden"
-                     :ui="{width: 'w-auto'}">
-            <UButton color="orange" label="Category" trailing-icon="i-heroicons-chevron-down-20-solid"
-                     icon="ic:baseline-menu"/>
-            <template #item="{ item }">
-              <span class="w-full text-left" @click="navigateTo(item.link)"
-                    :class="[{'font-bold': route.fullPath === item.link}]">{{ item.label }}</span>
-            </template>
-          </UDropdown>
+          <ClientOnly>
+            <UDropdown :items="[...categoryData]" :popper="{ placement: 'bottom-start' }" class="md:block hidden"
+                       :ui="{width: 'w-auto'}">
+              <UButton color="orange" :label="t('category')" trailing-icon="i-heroicons-chevron-down-20-solid"
+                       icon="ic:baseline-menu"/>
+              <template #item="{ item }">
+                <!--              <span class="w-full text-left" @click="navigateTo(item.link)"-->
+                <!--                    :class="[{'font-bold': route.fullPath === item.link}]">{{ item.label }}</span>-->
+                <span class="w-full text-left" @click="navigateTo(item.alias)">{{ item.name }}</span>
+              </template>
+            </UDropdown>
+          </ClientOnly>
         </div>
         <div style="grid-area: secondary-menu" class="flex items-center gap-3">
           <!--          <ColorModeToggle class="sm:block hidden"/>-->
@@ -167,9 +201,9 @@ async function switchLang(lang: string) {
     <ClientOnly>
       <USlideover v-model="isOpenToggleMenu" side="left" class="w-80">
         <div class="px-4 py-8 flex flex-col min-h-screen">
-          <div class="mb-16">
+          <div class="mb-16 flex items-center justify-between">
             <Logo/>
-            <!--            <ColorModeToggle/>-->
+            <ColorModeToggle/>
           </div>
 
           <div class="flex flex-col gap-6 flex-1">
@@ -180,7 +214,9 @@ async function switchLang(lang: string) {
                 }}</span>
           </div>
           <div>
-            <!--            <UButton v-if="!authData" label="Sign In" icon="ic:outline-log-in" @click="signIn" block/>-->
+            <NuxtLinkLocale to="auth-signIn">
+              <UButton v-if="!authData" label="Sign In" icon="ic:outline-log-in" block/>
+            </NuxtLinkLocale>
           </div>
         </div>
       </USlideover>

@@ -11,5 +11,6 @@ export default {
     or: 'Hoặc',
     continueWithGoogle: 'Đăng nhập Google',
     backToHome: 'Trở về trang chủ',
-    buyNow: 'Giỏ hàng'
+    buyNow: 'Giỏ hàng',
+    category: 'Danh mục'
 }

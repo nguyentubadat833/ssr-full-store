@@ -11,5 +11,6 @@ export default {
     or: 'OR',
     continueWithGoogle: 'Continue with Google',
     backToHome: 'Back To Home',
-    buyNow: 'Buy Now'
+    buyNow: 'Buy Now',
+    category: 'Category'
 }

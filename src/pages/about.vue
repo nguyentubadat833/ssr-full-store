@@ -4,7 +4,7 @@ const route = useRoute()
 definePageMeta({
   title: {
     vi: 'Về chúng tôi',
-    en: 'About Us'
+    en: 'About'
   },
   navOrder: 2,
   type: 'secondary',

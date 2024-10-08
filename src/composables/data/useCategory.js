@@ -1,9 +1,12 @@
-const data = await useApiConfig({
-    endpoint: '/api/category/select',
-    params: {
-        selectType: 'selectMany'
-    }
-})
+async function data() {
+    return await useApiConfig({
+        endpoint: '/api/category/select',
+        params: {
+            selectType: 'selectMany'
+        },
+        isShowSuccessMessage: false
+    })
+}
 
 async function findByCode(code) {
     return await useApiConfig({
