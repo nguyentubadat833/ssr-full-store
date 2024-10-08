@@ -10,11 +10,18 @@ const providers = await getProviders()
 const isLoading = ref(false)
 
 definePageMeta({
+  layout: 'auth',
   title: {
     vi: 'Đăng nhập',
     en: 'Sign In'
   },
   auth: {unauthenticatedOnly: true, navigateAuthenticatedTo: '/'}
+})
+defineI18nRoute({
+  paths: {
+    vi: '/xac-thuc/dang-nhap',
+    en: '/auth/signIn/test'
+  },
 })
 
 useHead({
@@ -63,7 +70,9 @@ async function onLogin() {
       </UFormGroup>
       <div class="text-right space-y-7">
         <span
-            class="text-gray-600 italic cursor-pointer hover:underline hover:text-orange-400 text-sm">{{ t('forgotPassword') }} ?</span>
+            class="text-gray-600 italic cursor-pointer hover:underline hover:text-orange-400 text-sm">{{
+            t('forgotPassword')
+          }} ?</span>
         <UButton :loading="isLoading" type="submit" :label="t('continue')" block/>
       </div>
     </UForm>

@@ -3,13 +3,21 @@ import {object, string} from "yup";
 
 const isLoading = ref(false)
 const route = useRoute()
-const {locale, t} = useI18n()
+const {t} = useI18n()
+const {signUp: customPaths} = authCustomPaths()
 definePageMeta({
+  layout: 'auth',
   title: {
     vi: 'Đăng ký',
     en: 'Sign Up'
   },
   auth: {unauthenticatedOnly: true, navigateAuthenticatedTo: '/'}
+})
+defineI18nRoute({
+  paths: {
+    vi: '/xac-thuc/dang-ky',
+    en: '/auth/sign-up'
+  }
 })
 
 useHead({

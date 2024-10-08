@@ -14,11 +14,13 @@ const authCardStyleConfig = {
   <div class="h-screen flex items-center justify-center">
     <div class="md:w-96 w-full">
       <UCard :ui="authCardStyleConfig">
-        <div class="flex flex-col items-center gap-5 mb-10">
-          <span class="text-4xl font-bold text-center">{{ route?.meta?.title[`${locale}`] }}</span>
-          <span @click="navigateTo('/')" class="text-sm text-gray-500 hover:underline cursor-pointer">{{t('backToHome')}}</span>
-        </div>
-        <NuxtPage/>
+        <ClientOnly>
+          <div class="flex flex-col items-center gap-5 mb-10">
+            <span class="text-4xl font-bold text-center">{{ route?.meta?.title[`${locale}`] }}</span>
+            <span @click="navigateTo('/')" class="text-sm text-gray-500 hover:underline cursor-pointer">{{t('backToHome')}}</span>
+          </div>
+          <NuxtPage/>
+        </ClientOnly>
       </UCard>
     </div>
   </div>

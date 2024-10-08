@@ -2,10 +2,10 @@
 
 const colorMode = useColorMode()
 const isDark = computed({
-  get () {
+  get() {
     return colorMode.value === 'dark'
   },
-  set () {
+  set() {
     colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
   }
 })
@@ -14,15 +14,13 @@ const isDark = computed({
 
 <template>
   <div>
-    <ClientOnly>
-      <UButton
-          :icon="isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'"
-          variant="ghost"
-          color="gray"
-          aria-label="Theme"
-          @click="isDark = !isDark"
-      />
-    </ClientOnly>
+    <UButton
+        :icon="isDark ? 'i-heroicons-moon-20-solid' : 'i-heroicons-sun-20-solid'"
+        variant="ghost"
+        color="gray"
+        aria-label="Theme"
+        @click="isDark = !isDark"
+    />
   </div>
 </template>
 

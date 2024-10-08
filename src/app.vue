@@ -11,14 +11,17 @@
 <script setup>
 const {locale, defaultLocale} = useI18n()
 const route = useRoute()
+const router = useRouter()
 const layoutName = computed(() => {
   if (route.fullPath.startsWith('/console')){
     return 'console'
   }
-  if (route.fullPath.startsWith('/auth')){
-    return 'auth'
-  }
+  // if (route.fullPath.startsWith('/auth')){
+  //   return 'auth'
+  // }
 })
+
+console.log(router.getRoutes())
 
 useHead({
   // titleTemplate: route.meta.title[`${locale.value}`]

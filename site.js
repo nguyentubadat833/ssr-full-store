@@ -3,7 +3,7 @@ export default {
     description: 'This is a store management project',
     author: 'IC Production',
     i18n: {
-        defaultLocale: 'vi',
+        defaultLocale: 'en',
         locales: [
             {
                 code: 'en',
@@ -18,14 +18,18 @@ export default {
             }
         ],
         pages: {
-            about: {
-                vi: '/ve-chung-toi',
-                en: '/about'
-            },
-            contact: {
-                vi: '/lien-he',
-                en: '/contact'
-            }
+            // 'auth-signIn': {
+            //     vi: '/dang-nhap',
+            //     en: '/signIn'
+            // },
+            // about: {
+            //     vi: '/ve-chung-toi',
+            //     en: '/about'
+            // },
+            // contact: {
+            //     vi: '/lien-he',
+            //     en: '/contact'
+            // }
         }
     },
     // nav: [

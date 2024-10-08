@@ -1,7 +1,12 @@
 <script setup lang="tsx">
 
+import {routes} from "vue-router/auto-routes";
+
 const route = useRoute()
-const {locale, t} = useI18n()
+const router = useRouter()
+const localePath = useLocalePath()
+const switchLocalePath = useSwitchLocalePath()
+const {locale, defaultLocale, setLocale, t} = useI18n()
 const {navLinksPrimary, navLinksSecondary} = useNav()
 const {data: authData, signOut, signIn} = useAuth()
 const {pageName, contact, category} = await queryContent('/meta').findOne()
@@ -21,15 +26,6 @@ const categorySlideover = computed(() => {
   }
   return []
 })
-
-const signInLabel = {
-  vi: 'Đăng nhập',
-  en: 'Sign In'
-}
-const signOutLabel = {
-  vi: 'Thoát',
-  en: 'Logout'
-}
 
 async function toShoppingCartPage() {
   await navigateTo('/shopping/cart')
@@ -73,27 +69,11 @@ const Logo = () => (
     </div>
 )
 
-// async function toSignIn() {
-//   const width = 500;
-//   const height = 500;
-//
-//   const screenWidth = window.screen.width;
-//   const screenHeight = window.screen.height;
-//
-//   const left = (screenWidth - width) / 2;
-//   const top = (screenHeight - height) / 2;
-//   await navigateTo('/auth/signIn', {
-//     open: {
-//       target: "_blank",
-//       windowFeatures: {
-//         width: 500,
-//         height: 500 + 100,
-//         top: top - 100,
-//         left: left
-//       }
-//     }
-//   })
-//
+async function switchLang(lang: string) {
+  setLocale(lang)
+  const path = switchLocalePath(lang)
+  await navigateTo(path)
+}
 </script>
 
 <template>
@@ -112,9 +92,17 @@ const Logo = () => (
                     @click="navigateTo(item.link)">{{ item.text }}</span>
             </div>
             <div class="h-5 flex items-center gap-2">
-              <span v-if="!authData" class="hover:underline cursor-pointer" @click="signIn">{{t('signIn')}}</span>
-              <span v-else class="hover:underline cursor-pointer" @click="signOut">{{t('signOut')}}</span>
-              <ColorModeToggle/>
+              <ClientOnly>
+                <div class="hover:underline cursor-pointer">
+                  <NuxtLinkLocale v-if="!authData" to="auth-signIn"> {{ t('signIn') }}</NuxtLinkLocale>
+                  <NuxtLinkLocale v-else to="auth-signUp"> {{ t('signOut') }}</NuxtLinkLocale>
+                </div>
+                <ColorModeToggle/>
+                <div class="cursor-pointer hover:underline">
+                  <span v-if="locale !== 'en'" @click="switchLang('en')">{{ useToUpper('en') }}</span>
+                  <span v-else @click="switchLang('vi')">{{ useToUpper('vi') }}</span>
+                </div>
+              </ClientOnly>
             </div>
           </div>
         </div>
@@ -199,7 +187,7 @@ const Logo = () => (
                 }}</span>
           </div>
           <div>
-            <UButton v-if="!authData" label="Sign In" icon="ic:outline-log-in" @click="signIn" block/>
+            <!--            <UButton v-if="!authData" label="Sign In" icon="ic:outline-log-in" @click="signIn" block/>-->
           </div>
         </div>
       </USlideover>

@@ -20,7 +20,6 @@ export default function () {
             if (locale.value === defaultLocale) {
                 return !getLangCodeArray.value.some(lang => route.path.startsWith(`/${lang}`));
             } else {
-                console.log(locale.value)
                 return route.path.startsWith(`/${locale.value}`);
             }
         })
