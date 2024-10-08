@@ -20,7 +20,7 @@ definePageMeta({
 defineI18nRoute({
   paths: {
     vi: '/xac-thuc/dang-nhap',
-    en: '/auth/signIn/test'
+    en: '/auth/signIn'
   },
 })
 

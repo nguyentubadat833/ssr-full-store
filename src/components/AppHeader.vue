@@ -1,13 +1,9 @@
 <script setup lang="tsx">
 
-import {routes} from "vue-router/auto-routes";
-
 const route = useRoute()
-const router = useRouter()
-const localePath = useLocalePath()
 const switchLocalePath = useSwitchLocalePath()
-const {locale, defaultLocale, setLocale, t} = useI18n()
-const {navLinksPrimary, navLinksSecondary} = useNav()
+const {locale, setLocale, t} = useI18n()
+const {navLinksSecondary} = useNav()
 const {data: authData, signOut, signIn} = useAuth()
 const {pageName, contact, category} = await queryContent('/meta').findOne()
 

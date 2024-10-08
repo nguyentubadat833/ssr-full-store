@@ -36,7 +36,7 @@ export default function () {
         )
         .map((route) => {
             return {
-                text: route.meta.title[`${locale.value}`],
+                text: computed(() => route.meta.title[`${locale.value}`]),
                 link: route.meta.name || route.path,
                 icon: route.meta.icon,
                 type: route.meta.type,
