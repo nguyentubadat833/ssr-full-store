@@ -86,7 +86,6 @@ const items = computed(() => {
 })
 
 
-
 </script>
 
 <template>
@@ -104,13 +103,13 @@ const items = computed(() => {
                     :class="{'underline font-bold': route.fullPath === item?.link}"
                     @click="navigateTo(item.link)">{{ item.text }}</span>
             </div>
-            <div class="h-5 md:flex items-center gap-2 hidden">
+            <div class="hover:underline cursor-pointer hidden md:block">
+              <NuxtLinkLocale v-if="!authData" to="auth-signIn"> {{ t('signIn') }}</NuxtLinkLocale>
+              <NuxtLinkLocale v-else to="auth-signUp"> {{ t('signOut') }}</NuxtLinkLocale>
+            </div>
+            <div class="h-5 flex items-center gap-2">
               <ClientOnly>
-                <div class="hover:underline cursor-pointer">
-                  <NuxtLinkLocale v-if="!authData" to="auth-signIn"> {{ t('signIn') }}</NuxtLinkLocale>
-                  <NuxtLinkLocale v-else to="auth-signUp"> {{ t('signOut') }}</NuxtLinkLocale>
-                </div>
-                <ColorModeToggle/>
+                <ColorModeToggle class="hidden md:block"/>
                 <UDropdown :items="items" :popper="{ arrow: true }" class="flex items-center">
                   <template #item="{item}">
                     <div class="flex items-center gap-3 w-full" @click="switchLang(item.code)">
@@ -135,36 +134,32 @@ const items = computed(() => {
         <div style="grid-area: primary-menu" class="flex justify-center py-4">
           <!--          <UButton icon="ic:baseline-menu" class="w-9 flex justify-center md:hidden" @click="isOpenToggleMenu = true"/>-->
           <UButton icon="ic:baseline-menu" class="w-9 flex justify-center md:hidden" @click="isOpenToggleMenu = true"/>
-          <ClientOnly>
-            <UDropdown :items="[...categoryDataDropDown]" :popper="{ placement: 'bottom-start' }"
-                       class="md:block hidden"
-                       :ui="{width: 'w-auto'}">
-              <UButton color="orange" :label="t('category')" trailing-icon="i-heroicons-chevron-down-20-solid"
-                       icon="ic:baseline-menu"/>
-              <template #item="{ item }">
-                <!--              <span class="w-full text-left" @click="navigateTo(item.link)"-->
-                <!--                    :class="[{'font-bold': route.fullPath === item.link}]">{{ item.label }}</span>-->
-                <span class="w-80 truncate text-left"
-                      :class="[{'font-bold': route.fullPath === `/category/${item.alias}`}]"
-                      @click="navigateTo(`/category/${item.alias}`)">{{ item.name }}</span>
-              </template>
-            </UDropdown>
-          </ClientOnly>
+          <UDropdown :items="[...categoryDataDropDown]" :popper="{ placement: 'bottom-start' }"
+                     class="md:block hidden"
+                     :ui="{width: 'w-auto'}">
+            <UButton color="orange" :label="t('category')" trailing-icon="i-heroicons-chevron-down-20-solid"
+                     icon="ic:baseline-menu"/>
+            <template #item="{ item }">
+              <!--              <span class="w-full text-left" @click="navigateTo(item.link)"-->
+              <!--                    :class="[{'font-bold': route.fullPath === item.link}]">{{ item.label }}</span>-->
+              <span class="w-80 truncate text-left"
+                    :class="[{'font-bold': route.fullPath === `/category/${item.alias}`}]"
+                    @click="navigateTo(`/category/${item.alias}`)">{{ item.name }}</span>
+            </template>
+          </UDropdown>
         </div>
         <div style="grid-area: secondary-menu" class="flex items-center gap-3">
           <!--          <ColorModeToggle class="sm:block hidden"/>-->
           <div v-if="!authData" class="flex items-center">
-            <ClientOnly>
-              <NuxtLinkLocale to="shopping-cart">
-                <UButton class="rounded-lg md:block hidden" variant="ghost">
-                  <div class="flex items-center gap-2">
-                    <UIcon name="ic:sharp-shopping-cart" class="text-2xl"/>
-                    <span class="text-base">{{ t('buyNow') }}</span>
-                  </div>
-                </UButton>
-                <Icon name="ic:sharp-shopping-cart" size="25" class="bg-primary md:hidden"/>
-              </NuxtLinkLocale>
-            </ClientOnly>
+            <NuxtLinkLocale to="shopping-cart">
+              <UButton class="rounded-lg md:block hidden" variant="ghost">
+                <div class="flex items-center gap-2">
+                  <UIcon name="ic:sharp-shopping-cart" class="text-2xl"/>
+                  <span class="text-base">{{ t('buyNow') }}</span>
+                </div>
+              </UButton>
+              <Icon name="ic:sharp-shopping-cart" size="25" class="bg-primary md:hidden"/>
+            </NuxtLinkLocale>
           </div>
 
           <UDropdown v-if="authData" :items="userDropdownItems" :popper="{ placement: 'bottom-start' }">
@@ -197,18 +192,18 @@ const items = computed(() => {
             <ColorModeToggle/>
           </div>
 
-          <div class="flex flex-col gap-6 flex-1">
+          <div class="flex flex-col gap-6 flex-1 overflow-hidden overflow-y-scroll py-5">
               <span v-for="item in categorySlideover" @click="slideoverToPage(`/category/${item.alias}`)"
                     class="hover:text-primary underline-offset-8 text-xl w-full py-2 font-semibold border-b"
                     :class="{'text-primary font-bold border-primary': route.fullPath === `/category/${item.alias}`}">{{
                   item?.name
                 }}</span>
           </div>
-
           <div>
-            <NuxtLinkLocale to="auth-signIn">
-              <UButton v-if="!authData" label="Sign In" icon="ic:outline-log-in" block/>
+            <NuxtLinkLocale v-if="!authData" to="auth-signIn">
+              <UButton :label="t('signIn')" block/>
             </NuxtLinkLocale>
+            <UButton v-else :label="t('signOut')" block @click="signOut" />
           </div>
         </div>
       </USlideover>

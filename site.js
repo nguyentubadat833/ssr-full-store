@@ -3,7 +3,7 @@ export default {
     description: 'This is a store management project',
     author: 'IC Production',
     i18n: {
-        defaultLocale: 'vi',
+        defaultLocale: 'en',
         locales: [
             {
                 code: 'en',
