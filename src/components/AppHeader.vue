@@ -8,6 +8,8 @@ const {navLinksSecondary} = useNav()
 const {data: authData, signOut, signIn} = useAuth()
 const {pageName, contact, category} = await queryContent('/meta').findOne()
 
+console.log(navLinksSecondary.value)
+
 const {data: categoryDataDropDown} = await useLazyAsyncData('categoryDataDropDown', () => data(), {
   transform: (input) => {
     let result = []
@@ -18,8 +20,6 @@ const {data: categoryDataDropDown} = await useLazyAsyncData('categoryDataDropDow
 
 const isOpenToggleMenu = ref(false)
 const {data: categorySlideover} = await useLazyAsyncData('categorySlideover', () => data())
-
-console.log(categorySlideover.value)
 
 async function toShoppingCartPage() {
   await navigateTo('/shopping/cart')
@@ -99,28 +99,27 @@ const items = computed(() => {
           </div>
           <div class="flex text-sm gap-4 text-zinc-700 font-medium">
             <div class="flex gap-4 items-center">
-              <span v-for="item in navLinksSecondary" class="cursor-pointer hover:underline"
-                    :class="{'underline font-bold': route.fullPath === item?.link}"
-                    @click="navigateTo(item.link)">{{ item.text }}</span>
+              <NuxtLinkLocale v-for="item in navLinksSecondary" :to="item.link">
+                <span class="cursor-pointer hover:underline"
+                      :class="{'underline font-bold': route.fullPath === item?.link}">{{ item.text }}</span>
+              </NuxtLinkLocale>
             </div>
             <div class="hover:underline cursor-pointer hidden md:block">
               <NuxtLinkLocale v-if="!authData" to="auth-signIn"> {{ t('signIn') }}</NuxtLinkLocale>
               <NuxtLinkLocale v-else to="auth-signUp"> {{ t('signOut') }}</NuxtLinkLocale>
             </div>
             <div class="h-5 flex items-center gap-2">
-              <ClientOnly>
-                <ColorModeToggle class="hidden md:block"/>
-                <UDropdown :items="items" :popper="{ arrow: true }" class="flex items-center">
-                  <template #item="{item}">
-                    <div class="flex items-center gap-3 w-full" @click="switchLang(item.code)">
-                      <Icon :name="item.icon"/>
-                      <span>{{ item.name }}</span>
-                    </div>
-                  </template>
-                  <Icon v-if="locale === 'en'" name="flag:us-4x3" size="20"/>
-                  <Icon v-else name="flag:vn-4x3" size="20"/>
-                </UDropdown>
-              </ClientOnly>
+              <ColorModeToggle class="hidden md:block"/>
+              <UDropdown :items="items" :popper="{ arrow: true }" class="flex items-center">
+                <template #item="{item}">
+                  <div class="flex items-center gap-3 w-full" @click="switchLang(item.code)">
+                    <Icon :name="item.icon"/>
+                    <span>{{ item.name }}</span>
+                  </div>
+                </template>
+                <Icon v-if="locale === 'en'" name="flag:us-4x3" size="20"/>
+                <Icon v-else name="flag:vn-4x3" size="20"/>
+              </UDropdown>
             </div>
           </div>
         </div>
@@ -203,7 +202,7 @@ const items = computed(() => {
             <NuxtLinkLocale v-if="!authData" to="auth-signIn">
               <UButton :label="t('signIn')" block/>
             </NuxtLinkLocale>
-            <UButton v-else :label="t('signOut')" block @click="signOut" />
+            <UButton v-else :label="t('signOut')" block @click="signOut"/>
           </div>
         </div>
       </USlideover>

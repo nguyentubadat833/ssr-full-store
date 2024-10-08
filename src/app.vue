@@ -21,7 +21,9 @@ const layoutName = computed(() => {
   // }
 })
 
-console.log(router.getRoutes())
+watchEffect(() => {
+  console.log(locale.value)
+})
 
 useHead({
   // titleTemplate: route.meta.title[`${locale.value}`]

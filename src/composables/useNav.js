@@ -2,7 +2,7 @@ import site from "~~/site.js";
 
 export default function () {
     const routes = useRouter().getRoutes()
-    const {locale, defaultLocale} = useI18n()
+    const {locale} = useI18n()
     const getLangCodeArray = computed(() => {
         let result = []
         const locales = site?.i18n?.locales
@@ -17,11 +17,12 @@ export default function () {
     const navLinksFromRouter = routes
         .filter((route) => route.meta.hidden !== true)
         .filter((route) => {
-            if (locale.value === defaultLocale) {
-                return !getLangCodeArray.value.some(lang => route.path.startsWith(`/${lang}`));
-            } else {
-                return route.path.startsWith(`/${locale.value}`);
-            }
+            // if (locale.value === defaultLocale) {
+            //     return !getLangCodeArray.value.some(lang => route.path.startsWith(`/${lang}`));
+            // } else {
+            //     return route.path.startsWith(`/${locale.value}`);
+            // }
+            return !getLangCodeArray.value.some(lang => route.path.startsWith(`/${lang}`));
         })
         .filter(
             (route) => route.name && route.name[0] !== route.name[0].toUpperCase(),
