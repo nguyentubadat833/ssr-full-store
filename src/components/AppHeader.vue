@@ -106,7 +106,7 @@ const items = computed(() => {
             </div>
             <div class="hover:underline cursor-pointer hidden md:block">
               <NuxtLinkLocale v-if="!authData" to="auth-signIn"> {{ t('signIn') }}</NuxtLinkLocale>
-              <NuxtLinkLocale v-else to="auth-signUp"> {{ t('signOut') }}</NuxtLinkLocale>
+              <span v-else @click="signOut"> {{ t('signOut') }}</span>
             </div>
             <div class="h-5 flex items-center gap-2">
               <ColorModeToggle class="hidden md:block"/>
