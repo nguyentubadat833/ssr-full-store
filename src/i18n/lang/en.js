@@ -12,5 +12,6 @@ export default {
     continueWithGoogle: 'Continue with Google',
     backToHome: 'Back To Home',
     buyNow: 'Buy Now',
-    category: 'Category'
+    category: 'Category',
+    addToCart: 'Add To Cart'
 }

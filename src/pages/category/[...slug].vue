@@ -4,7 +4,14 @@ definePageMeta({
   navOrder: 2,
   // type: 'primary'
 })
+defineI18nRoute({
+  paths: {
+    vi: '/danh-muc/[name]',
+    en: '/category/[name]'
+  }
+})
 
+const {t} = useI18n()
 const route = useRoute()
 
 const products = [
@@ -64,15 +71,15 @@ const products = [
   <div>
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 lg:gap-8">
       <div v-for="item in products"
-           class="w-full sm:aspect-[4/7] aspect-[4/8] border shadow flex flex-col items-center gap-2 overflow-hidden"
+           class="sm:aspect-[4/7] aspect-[4/8] border shadow flex flex-col items-center gap-2 overflow-hidden"
            :class="[{'border-b border-gray-700': useColorMode().value === 'dark'}]">
-        <img :src="item.image" class="hover:scale-110 transition-transform duration-700 cursor-pointer w-full"/>
+        <img :src="item.image" class="hover:scale-110 transition-transform duration-700 cursor-pointer w-full" alt="image"/>
         <div class="flex flex-col items-center justify-between h-full w-full sm:py-2 py-1">
           <span class="text-gray-400 text-xs">{{ useToUpper(item?.category) }}</span>
           <span class="truncate sm:overflow-visible sm:whitespace-normal w-5/6 text-center text-sm hover:underline hover:text-primary cursor-pointer">{{ item.name }}</span>
           <div class="flex flex-col items-center w-full px-4 pb-2 gap-2">
             <span class="text-red-600 font-bold text-lg">{{ item.price }}</span>
-            <UButton label="Add to cart" block/>
+            <UButton :label="t('addToCart')" block/>
           </div>
         </div>
       </div>

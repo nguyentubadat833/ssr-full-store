@@ -8,7 +8,7 @@ const {navLinksSecondary} = useNav()
 const {data: authData, signOut, signIn} = useAuth()
 const {pageName, contact, category} = await queryContent('/meta').findOne()
 
-const {data: categoryData} = await useAsyncData('category-full', () => data(), {
+const {data: categoryDataDropDown} = await useLazyAsyncData('categoryDataDropDown', () => data(), {
   transform: (input) => {
     let result = []
     result.push(input)
@@ -16,24 +16,10 @@ const {data: categoryData} = await useAsyncData('category-full', () => data(), {
   }
 })
 
-console.log(categoryData.value)
-
-
 const isOpenToggleMenu = ref(false)
-const categorySlideover = computed(() => {
-  if (Array.isArray(category) && category.length > 0) {
-    let result: any[] = []
-    category.forEach(el => {
-      if (Array.isArray(el) && el.length > 0) {
-        el.forEach(e => {
-          result.push(e)
-        })
-      }
-    })
-    return result
-  }
-  return []
-})
+const {data: categorySlideover} = await useLazyAsyncData('categorySlideover', () => data())
+
+console.log(categorySlideover.value)
 
 async function toShoppingCartPage() {
   await navigateTo('/shopping/cart')
@@ -99,6 +85,8 @@ const items = computed(() => {
   return result
 })
 
+
+
 </script>
 
 <template>
@@ -148,14 +136,17 @@ const items = computed(() => {
           <!--          <UButton icon="ic:baseline-menu" class="w-9 flex justify-center md:hidden" @click="isOpenToggleMenu = true"/>-->
           <UButton icon="ic:baseline-menu" class="w-9 flex justify-center md:hidden" @click="isOpenToggleMenu = true"/>
           <ClientOnly>
-            <UDropdown :items="[...categoryData]" :popper="{ placement: 'bottom-start' }" class="md:block hidden"
+            <UDropdown :items="[...categoryDataDropDown]" :popper="{ placement: 'bottom-start' }"
+                       class="md:block hidden"
                        :ui="{width: 'w-auto'}">
               <UButton color="orange" :label="t('category')" trailing-icon="i-heroicons-chevron-down-20-solid"
                        icon="ic:baseline-menu"/>
               <template #item="{ item }">
                 <!--              <span class="w-full text-left" @click="navigateTo(item.link)"-->
                 <!--                    :class="[{'font-bold': route.fullPath === item.link}]">{{ item.label }}</span>-->
-                <span class="w-full text-left" @click="navigateTo(item.alias)">{{ item.name }}</span>
+                <span class="w-80 truncate text-left"
+                      :class="[{'font-bold': route.fullPath === `/category/${item.alias}`}]"
+                      @click="navigateTo(`/category/${item.alias}`)">{{ item.name }}</span>
               </template>
             </UDropdown>
           </ClientOnly>
@@ -207,12 +198,13 @@ const items = computed(() => {
           </div>
 
           <div class="flex flex-col gap-6 flex-1">
-              <span v-for="item in categorySlideover" @click="slideoverToPage(item?.link)"
+              <span v-for="item in categorySlideover" @click="slideoverToPage(`/category/${item.alias}`)"
                     class="hover:text-primary underline-offset-8 text-xl w-full py-2 font-semibold border-b"
-                    :class="{'text-primary font-bold border-primary': route.fullPath === item?.link}">{{
-                  item?.label
+                    :class="{'text-primary font-bold border-primary': route.fullPath === `/category/${item.alias}`}">{{
+                  item?.name
                 }}</span>
           </div>
+
           <div>
             <NuxtLinkLocale to="auth-signIn">
               <UButton v-if="!authData" label="Sign In" icon="ic:outline-log-in" block/>

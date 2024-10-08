@@ -12,5 +12,6 @@ export default {
     continueWithGoogle: 'Đăng nhập Google',
     backToHome: 'Trở về trang chủ',
     buyNow: 'Giỏ hàng',
-    category: 'Danh mục'
+    category: 'Danh mục',
+    addToCart: 'Thêm giỏ hàng'
 }
