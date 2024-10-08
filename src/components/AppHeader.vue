@@ -70,6 +70,10 @@ async function switchLang(lang: string) {
   const path = switchLocalePath(lang)
   await navigateTo(path)
 }
+
+// const localePath = useLocalePath()
+// console.log(localePath('shopping-cart'))
+
 </script>
 
 <template>
@@ -124,14 +128,18 @@ async function switchLang(lang: string) {
         </div>
         <div style="grid-area: secondary-menu" class="flex items-center gap-3">
           <!--          <ColorModeToggle class="sm:block hidden"/>-->
-          <div v-if="!authData" @click="toShoppingCartPage" class="flex items-center">
-            <UButton class="rounded-lg md:block hidden" variant="ghost">
-              <div class="flex items-center gap-2">
-                <UIcon name="ic:sharp-shopping-cart" class="text-2xl"/>
-                <span class="text-base">{{t('buyNow')}}</span>
-              </div>
-            </UButton>
-            <Icon name="ic:sharp-shopping-cart" size="25" class="bg-primary md:hidden"/>
+          <div v-if="!authData" class="flex items-center">
+            <ClientOnly>
+              <NuxtLinkLocale to="shopping-cart">
+                <UButton class="rounded-lg md:block hidden" variant="ghost">
+                  <div class="flex items-center gap-2">
+                    <UIcon name="ic:sharp-shopping-cart" class="text-2xl"/>
+                    <span class="text-base">{{ t('buyNow') }}</span>
+                  </div>
+                </UButton>
+                <Icon name="ic:sharp-shopping-cart" size="25" class="bg-primary md:hidden"/>
+              </NuxtLinkLocale>
+            </ClientOnly>
           </div>
 
           <UDropdown v-if="authData" :items="userDropdownItems" :popper="{ placement: 'bottom-start' }">
