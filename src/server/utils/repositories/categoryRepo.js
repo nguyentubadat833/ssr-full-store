@@ -21,7 +21,7 @@ async function update(data) {
     });
 }
 
-async function selectByCode (code)  {
+async function selectByCode(code) {
     return prismaClient.category.findUnique({
         where: {
             code: code
@@ -37,9 +37,18 @@ async function selectManyByStatus({status = 1} = {}) {
     })
 }
 
+async function deleteCategory(code) {
+    await prismaClient.category.delete({
+        where: {
+            code: code
+        }
+    })
+}
+
 export default {
     create,
     update,
+    deleteCategory,
     selectByCode,
     selectManyByStatus
 }

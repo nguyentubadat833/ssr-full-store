@@ -17,7 +17,9 @@ const authCardStyleConfig = {
         <ClientOnly>
           <div class="flex flex-col items-center gap-5 mb-10">
             <span class="text-4xl font-bold text-center">{{ route?.meta?.title[`${locale}`] }}</span>
-            <span @click="navigateTo('/')" class="text-sm text-gray-500 hover:underline cursor-pointer">{{t('backToHome')}}</span>
+            <NuxtLinkLocale to="/">
+              <span class="text-sm text-gray-500 hover:underline cursor-pointer">{{t('backToHome')}}</span>
+            </NuxtLinkLocale>
           </div>
           <NuxtPage/>
         </ClientOnly>

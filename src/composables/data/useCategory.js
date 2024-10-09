@@ -26,8 +26,20 @@ async function create(data) {
     })
 }
 
+async function del({code, callback}) {
+    await useApiConfig({
+        endpoint: '/api/category/delete',
+        method: 'DELETE',
+        params: {
+            code: code
+        },
+        callbackMethodOnSuccess: () => callback()
+    })
+}
+
 export default {
     data,
     findByCode,
-    create
+    create,
+    del
 }

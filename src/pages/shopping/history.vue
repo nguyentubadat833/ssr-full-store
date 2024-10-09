@@ -4,6 +4,12 @@ definePageMeta({
   requireAuth: true
   // type: 'secondary'
 })
+defineI18nRoute({
+  paths: {
+    vi: '/lich-su-mua-hang',
+    en: '/shopping/history'
+  }
+})
 </script>
 
 <template>

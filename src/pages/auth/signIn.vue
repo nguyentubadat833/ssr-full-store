@@ -63,10 +63,10 @@ async function onLogin() {
   <div>
     <UForm :state="loginFormState" :schema="loginFormSchema" class="space-y-6" @submit="onLogin">
       <UFormGroup :label="t('email')" name="email">
-        <UInput v-model="loginFormState.email" type="email"/>
+        <UInput v-model="loginFormState.email" type="email" :placeholder="t('enterYourEmail')"/>
       </UFormGroup>
       <UFormGroup :label="t('password')" name="password">
-        <UInput v-model="loginFormState.password" type="password"/>
+        <UInput v-model="loginFormState.password" type="password" :placeholder="t('enterYourPassword')"/>
       </UFormGroup>
       <div class="text-right space-y-7">
         <span
@@ -79,7 +79,11 @@ async function onLogin() {
     <UDivider :label="t('or')" class="my-6"/>
     <div class="space-y-6">
       <UButton :label="t('continueWithGoogle')" color="white" icon="logos:google-icon" block @click="signIn('google')"/>
-      <UButton :label="t('signUp')" color="white" block @click="navigateTo('/auth/signUp')"/>
+      <div>
+        <NuxtLinkLocale to="/auth/signUp">
+          <UButton :label="t('signUp')" color="white" block/>
+        </NuxtLinkLocale>
+      </div>
     </div>
   </div>
 </template>

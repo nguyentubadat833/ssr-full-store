@@ -4,7 +4,6 @@ import {object, string} from "yup";
 const isLoading = ref(false)
 const route = useRoute()
 const {t} = useI18n()
-const {signUp: customPaths} = authCustomPaths()
 definePageMeta({
   layout: 'auth',
   title: {
@@ -16,7 +15,7 @@ definePageMeta({
 defineI18nRoute({
   paths: {
     vi: '/xac-thuc/dang-ky',
-    en: '/auth/sign-up'
+    en: '/auth/signUp'
   }
 })
 
@@ -58,16 +57,16 @@ async function onRegister() {
 
 <template>
   <div>
-    <UForm :state="registerFormState" :schema="registerFormSchema" class="space-y-7" @submit="onRegister">
+    <UForm :state="registerFormState" :schema="registerFormSchema" class="space-y-6" @submit="onRegister">
       <UFormGroup :label="t('name')" name="name">
-        <UInput v-model="registerFormState.name"/>
+        <UInput v-model="registerFormState.name" :placeholder="t('enterYourName')"/>
       </UFormGroup>
       <UFormGroup :label="t('email')" name="email">
-        <UInput v-model="registerFormState.email"/>
+        <UInput v-model="registerFormState.email" :placeholder="t('enterYourEmail')"/>
       </UFormGroup>
 
       <UFormGroup :label="t('password')" name="password">
-        <UInput v-model="registerFormState.password" type="password"/>
+        <UInput v-model="registerFormState.password" type="password" :placeholder="t('enterYourPassword')"/>
       </UFormGroup>
       <UButton :loading="isLoading" type="submit" :label="t('submit')" block/>
     </UForm>

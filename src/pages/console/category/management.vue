@@ -5,7 +5,8 @@ definePageMeta({
   hidden: true
 })
 
-const {findByCode, data, create} = useCategory
+const {findByCode, data, create, del} = useCategory
+const {data: categoryData, refresh: refreshData} = await useAsyncData('category-data', () => data())
 
 const isLoading = ref(false)
 const categoryCurrent = reactive({
@@ -14,6 +15,27 @@ const categoryCurrent = reactive({
   code: '',
   createdBy: '',
 })
+
+function clearState() {
+  categoryCurrent.name = ''
+  categoryCurrent.alias = ''
+  categoryCurrent.code = ''
+  categoryCurrent.createdBy = ''
+}
+
+async function deleteCategory() {
+  isLoading.value = true
+  await del({
+    code: categoryCurrent.code,
+    callback: () => {
+      refreshData()
+      clearState()
+    }
+  })
+      .finally(() => {
+        isLoading.value = false
+      })
+}
 
 async function mapCategoryInfo(object) {
   let data
@@ -33,12 +55,15 @@ async function mapCategoryInfo(object) {
 }
 
 async function createCategory() {
-  isLoading.value = true
-  const categoryCode = await create(categoryCurrent).finally(() => {
-    isLoading.value = false
-  })
-  if (categoryCode) {
-    await mapCategoryInfo(categoryCode)
+  if (categoryCurrent.name) {
+    isLoading.value = true
+    const categoryCode = await create(categoryCurrent).finally(() => {
+      isLoading.value = false
+    })
+    if (categoryCode) {
+      await mapCategoryInfo(categoryCode)
+      await refreshData()
+    }
   }
 }
 
@@ -71,7 +96,7 @@ const sort = ref({
 
 <template>
   <div>
-    <UForm :state="categoryCurrent" class="w-96 space-y-5">
+    <UForm :state="categoryCurrent" class="max-w-96 space-y-5">
       <UFormGroup label="Name" name="name">
         <UInput v-model="categoryCurrent.name"/>
       </UFormGroup>
@@ -84,11 +109,13 @@ const sort = ref({
       <UFormGroup label="Created by" name="createdBy">
         <UInput disabled v-model="categoryCurrent.createdBy"/>
       </UFormGroup>
-      <UFormGroup class="pt-3">
-        <UButton :loading="isLoading" label="Save" @click="createCategory" block/>
-      </UFormGroup>
+      <div class="flex justify-between pt-3">
+        <UButton label="Clear" @click="clearState" color="white"/>
+        <UButton :loading="isLoading" label="Delete" @click="deleteCategory" color="red"/>
+        <UButton :loading="isLoading" label="Save" @click="createCategory"/>
+      </div>
     </UForm>
-    <UTable :columns="columns" :rows="data || []" @select="mapCategoryInfo" class="mt-10 max-h-96">
+    <UTable :columns="columns" :rows="categoryData || []" @select="mapCategoryInfo" class="mt-10 max-h-96">
       <template #createdAt-data="{row}">
         <NuxtTime :datetime="row.createdAt" year="numeric" month="long" day="numeric" locale="en"/>
       </template>

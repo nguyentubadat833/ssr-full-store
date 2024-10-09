@@ -2,13 +2,13 @@
 
 const route = useRoute()
 const switchLocalePath = useSwitchLocalePath()
+const categoryCodeSelected = ref()
+const localePath = useLocalePath()
 const {data} = useCategory
 const {locale, locales, setLocale, t} = useI18n()
 const {navLinksSecondary} = useNav()
 const {data: authData, signOut, signIn} = useAuth()
 const {pageName, contact, category} = await queryContent('/meta').findOne()
-
-console.log(navLinksSecondary.value)
 
 const {data: categoryDataDropDown} = await useLazyAsyncData('categoryDataDropDown', () => data(), {
   transform: (input) => {
@@ -21,31 +21,30 @@ const {data: categoryDataDropDown} = await useLazyAsyncData('categoryDataDropDow
 const isOpenToggleMenu = ref(false)
 const {data: categorySlideover} = await useLazyAsyncData('categorySlideover', () => data())
 
-async function toShoppingCartPage() {
-  await navigateTo('/shopping/cart')
-}
-
-async function slideoverToPage(link: any) {
-  await navigateTo(link)
-  isOpenToggleMenu.value = false
+async function slideoverToPage(link: string, code: string) {
+  if (isString(link) && isString(code)) {
+    categoryCodeSelected.value = code
+    await navigateTo(link)
+    isOpenToggleMenu.value = false
+  }
 }
 
 const userDropdownItems = ref([
   [{
     label: 'Profile',
     icon: 'ic:baseline-account-circle',
-    click: () => navigateTo('/profile')
+    click: () => navigateTo(localePath('profile'))
   }],
   [
     {
       label: 'Shopping Cart',
       icon: 'ic:sharp-shopping-cart',
-      click: async () => await toShoppingCartPage()
+      click: () => navigateTo(localePath('shopping-cart'))
     },
     {
       label: "Shopping History",
       icon: 'ic:baseline-history',
-      click: () => navigateTo('/shopping/history')
+      click: () => navigateTo(localePath('shopping-history'))
     }
   ],
   [{
@@ -78,7 +77,7 @@ const items = computed(() => {
       el.label = 'EN'
     } else if (el.code === 'vi') {
       el.icon = 'flag:vn-4x3'
-      el.label = 'VIE'
+      el.label = 'VI'
     }
   })
   result.push(items)
@@ -141,9 +140,8 @@ const items = computed(() => {
             <template #item="{ item }">
               <!--              <span class="w-full text-left" @click="navigateTo(item.link)"-->
               <!--                    :class="[{'font-bold': route.fullPath === item.link}]">{{ item.label }}</span>-->
-              <span class="w-80 truncate text-left"
-                    :class="[{'font-bold': route.fullPath === `/category/${item.alias}`}]"
-                    @click="navigateTo(`/category/${item.alias}`)">{{ item.name }}</span>
+                <span class="w-80 truncate text-left" @click="navigateTo(`/category/${item.alias}`)"
+                      :class="[{'font-bold': route.fullPath === localePath(`/category/${item.alias}`)}]">{{ item.name }}</span>
             </template>
           </UDropdown>
         </div>
@@ -192,9 +190,9 @@ const items = computed(() => {
           </div>
 
           <div class="flex flex-col gap-6 flex-1 overflow-hidden overflow-y-scroll py-5">
-              <span v-for="item in categorySlideover" @click="slideoverToPage(`/category/${item.alias}`)"
+              <span v-for="item in categorySlideover" @click="slideoverToPage(`/category/${item.alias, item.code}`)"
                     class="hover:text-primary underline-offset-8 text-xl w-full py-2 font-semibold border-b"
-                    :class="{'text-primary font-bold border-primary': route.fullPath === `/category/${item.alias}`}">{{
+                    :class="{'text-primary font-bold border-primary': item.code === categoryCodeSelected}">{{
                   item?.name
                 }}</span>
           </div>
