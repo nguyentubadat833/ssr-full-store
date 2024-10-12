@@ -140,8 +140,10 @@ const items = computed(() => {
             <template #item="{ item }">
               <!--              <span class="w-full text-left" @click="navigateTo(item.link)"-->
               <!--                    :class="[{'font-bold': route.fullPath === item.link}]">{{ item.label }}</span>-->
-                <span class="w-80 truncate text-left" @click="navigateTo(`/category/${item.alias}`)"
+              <NuxtLinkLocale :to="`/category/${item.alias}`" class="max-w-80 text-left">
+                <span class="truncate"
                       :class="[{'font-bold': route.fullPath === localePath(`/category/${item.alias}`)}]">{{ item.name }}</span>
+              </NuxtLinkLocale>
             </template>
           </UDropdown>
         </div>
