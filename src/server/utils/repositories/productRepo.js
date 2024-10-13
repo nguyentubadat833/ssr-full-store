@@ -4,6 +4,7 @@ async function create(data) {
     return prismaClient.product.create({
         data: {
             code: data.code,
+            categoryCode: data.categoryCode,
             name: data.name,
             alias: slug(data.name),
             createdBy: data.createdBy
@@ -15,6 +16,7 @@ async function update(data) {
     return prismaClient.product.create({
         data: {
             name: data.name,
+            categoryCode: data.categoryCode,
             alias: slug(data.name),
             status: data.status,
             lastUpdatedAt: new Date(),
@@ -31,6 +33,14 @@ async function selectByCode(code) {
     })
 }
 
+async function selectManyByStatus({status = 1} = {}) {
+    return prismaClient.product.findMany({
+        where: {
+            status: status
+        }
+    })
+}
+
 async function deleteProduct(code) {
     await prismaClient.product.delete({
         where: {
@@ -43,5 +53,6 @@ export default {
     create,
     update,
     selectByCode,
-    deleteProduct
+    deleteProduct,
+    selectManyByStatus
 }

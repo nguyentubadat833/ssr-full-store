@@ -1,10 +1,15 @@
-import omit from 'lodash/omit.js'
+import _ from "lodash";
 
 export default defineEventHandler((event) => {
-    // const productProperties = {
-    //     name: 'product-name',
-    //     code: 'product-code',
-    //     description: 'product description'
-    // }
-    // return omit(productProperties, ['code'])
+    const params = getQuery(event)
+    const {selectType, productCode} = params
+    switch (selectType) {
+        case 'selectMany':
+            return productRepo.selectManyByStatus()
+        case 'selectByCode':
+            if (_.isString(productCode)) {
+                return productRepo.selectByCode(productCode)
+            }
+    }
+    return []
 })
