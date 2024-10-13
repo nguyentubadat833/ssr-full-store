@@ -6,7 +6,7 @@ definePageMeta({
 })
 
 const {findByCode, data, save, del} = useCategory
-const {data: categoryData, refresh: refreshData} = await useAsyncData('category-data', () => data())
+const {data: categoryData, refresh: refreshData} = await useLazyAsyncData('category-data', () => data())
 
 const isLoading = ref(false)
 const categoryCurrent = reactive({
@@ -54,7 +54,7 @@ async function mapCategoryInfo(object) {
   }
 }
 
-async function createCategory() {
+async function saveCategory() {
   if (categoryCurrent.name) {
     isLoading.value = true
     const categoryCode = await save(categoryCurrent).finally(() => {
@@ -95,32 +95,29 @@ const sort = ref({
 </script>
 
 <template>
-  <div>
-    <UForm :state="categoryCurrent" class="max-w-96 space-y-5">
-      <UFormGroup label="Name" name="name">
-        <UInput v-model="categoryCurrent.name"/>
-      </UFormGroup>
-      <UFormGroup label="Alias" name="alias">
-        <UInput disabled v-model="categoryCurrent.alias"/>
-      </UFormGroup>
-      <UFormGroup label="Code" name="code">
-        <UInput disabled v-model="categoryCurrent.code"/>
-      </UFormGroup>
-      <UFormGroup label="Created by" name="createdBy">
-        <UInput disabled v-model="categoryCurrent.createdBy"/>
-      </UFormGroup>
-      <div class="flex justify-between pt-3">
-        <UButton label="Clear" @click="clearState" color="white"/>
-        <UButton :loading="isLoading" label="Delete" @click="deleteCategory" color="red"/>
-        <UButton :loading="isLoading" label="Save" @click="createCategory"/>
-      </div>
-    </UForm>
+  <TableAndDetail @clear="clearState" @del="deleteCategory" @save="saveCategory">
+    <template #detail>
+      <UForm :state="categoryCurrent" class="max-w-96 space-y-5">
+        <UFormGroup label="Name" name="name">
+          <UInput v-model="categoryCurrent.name"/>
+        </UFormGroup>
+        <UFormGroup label="Alias" name="alias">
+          <UInput disabled v-model="categoryCurrent.alias"/>
+        </UFormGroup>
+        <UFormGroup label="Code" name="code">
+          <UInput disabled v-model="categoryCurrent.code"/>
+        </UFormGroup>
+        <UFormGroup label="Created by" name="createdBy">
+          <UInput disabled v-model="categoryCurrent.createdBy"/>
+        </UFormGroup>
+      </UForm>
+    </template>
     <UTable :columns="columns" :rows="categoryData || []" @select="mapCategoryInfo" class="mt-10 max-h-96">
       <template #createdAt-data="{row}">
         <NuxtTime :datetime="row.createdAt" year="numeric" month="long" day="numeric" locale="en"/>
       </template>
     </UTable>
-  </div>
+  </TableAndDetail>
 </template>
 
 <style scoped>
