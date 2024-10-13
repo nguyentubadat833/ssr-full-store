@@ -26,6 +26,22 @@ async function create(data) {
     })
 }
 
+async function update(data) {
+    return await useApiConfig({
+        endpoint: '/api/category/update',
+        method: 'PUT',
+        body: data
+    })
+}
+
+async function save(data) {
+    if (data.code) {
+        return await update(data)
+    } else {
+        return await create(data)
+    }
+}
+
 async function del({code, callback}) {
     await useApiConfig({
         endpoint: '/api/category/delete',
@@ -39,7 +55,9 @@ async function del({code, callback}) {
 
 export default {
     data,
-    findByCode,
     create,
+    update,
+    save,
+    findByCode,
     del
 }

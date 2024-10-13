@@ -12,7 +12,10 @@ async function create(data) {
 }
 
 async function update(data) {
-    return prismaClient.category.create({
+    return prismaClient.category.update({
+        where: {
+            code: data.code
+        },
         data: {
             name: data.name,
             alias: slug(data.name),

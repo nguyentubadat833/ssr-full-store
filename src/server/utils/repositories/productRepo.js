@@ -13,7 +13,10 @@ async function create(data) {
 }
 
 async function update(data) {
-    return prismaClient.product.create({
+    return prismaClient.product.update({
+        where: {
+            code: data.code
+        },
         data: {
             name: data.name,
             categoryCode: data.categoryCode,

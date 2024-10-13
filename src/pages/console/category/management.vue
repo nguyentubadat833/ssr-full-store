@@ -5,7 +5,7 @@ definePageMeta({
   hidden: true
 })
 
-const {findByCode, data, create, del} = useCategory
+const {findByCode, data, save, del} = useCategory
 const {data: categoryData, refresh: refreshData} = await useAsyncData('category-data', () => data())
 
 const isLoading = ref(false)
@@ -57,7 +57,7 @@ async function mapCategoryInfo(object) {
 async function createCategory() {
   if (categoryCurrent.name) {
     isLoading.value = true
-    const categoryCode = await create(categoryCurrent).finally(() => {
+    const categoryCode = await save(categoryCurrent).finally(() => {
       isLoading.value = false
     })
     if (categoryCode) {

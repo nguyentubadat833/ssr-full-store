@@ -5,13 +5,13 @@ definePageMeta({
   hidden: true
 })
 
-const {findByCode, data, create, del} = useProduct
+const {findByCode, data, save, del} = useProduct
 const {data: productData, refresh: refreshData} = await useAsyncData('product-data', () => data())
 const {data: categoryData} = await useAsyncData('category-data', () => useCategory.data(), {
   transform: (input) => {
     let result = []
     result.push({})
-    if (Array.isArray(input)){
+    if (Array.isArray(input)) {
       input.forEach(el => {
         result.push({
           name: el.name,
@@ -72,10 +72,10 @@ async function mapProductInfo(object) {
   }
 }
 
-async function createProduct() {
+async function saveProduct() {
   if (productCurrent.name) {
     isLoading.value = true
-    const productCode = await create(productCurrent).finally(() => {
+    const productCode = await save(productCurrent).finally(() => {
       isLoading.value = false
     })
     if (productCode) {
@@ -140,7 +140,7 @@ watchEffect(() => {
       <div class="flex justify-between pt-3">
         <UButton label="Clear" @click="clearState" color="white"/>
         <UButton :loading="isLoading" label="Delete" @click="deleteProduct" color="red"/>
-        <UButton :loading="isLoading" label="Save" @click="createProduct"/>
+        <UButton :loading="isLoading" label="Save" @click="saveProduct"/>
       </div>
     </UForm>
     <UTable :columns="columns" :rows="productData || []" @select="mapProductInfo" class="mt-10 max-h-96">
