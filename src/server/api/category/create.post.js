@@ -1,5 +1,4 @@
 import randomstring from 'randomstring'
-import slug from "slug";
 
 export default defineEventHandler(async (event) => {
     const data = await readBody(event)
@@ -11,7 +10,6 @@ export default defineEventHandler(async (event) => {
             charset: 'numeric'
         }),
         name: name,
-        alias: slug(name),
         createdBy: event.user.email,
     })
     setResponseStatus(event, 201)

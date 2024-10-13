@@ -1,9 +1,11 @@
+import slug from "slug";
+
 async function create(data) {
     return prismaClient.category.create({
         data: {
             code: data.code,
             name: data.name,
-            alias: data.alias,
+            alias: slug(data.name),
             createdBy: data.createdBy
         }
     });
@@ -13,7 +15,7 @@ async function update(data) {
     return prismaClient.category.create({
         data: {
             name: data.name,
-            alias: data.alias,
+            alias: slug(data.name),
             status: data.status,
             lastUpdatedAt: new Date(),
             lastUpdatedBy: data.lastUpdatedBy
