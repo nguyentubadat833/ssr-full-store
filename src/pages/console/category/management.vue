@@ -95,29 +95,32 @@ const sort = ref({
 </script>
 
 <template>
-  <TableAndDetail @clear="clearState" @del="deleteCategory" @save="saveCategory">
-    <template #detail>
-      <UForm :state="categoryCurrent" class="max-w-96 space-y-5">
-        <UFormGroup label="Name" name="name">
-          <UInput v-model="categoryCurrent.name"/>
-        </UFormGroup>
-        <UFormGroup label="Alias" name="alias">
-          <UInput disabled v-model="categoryCurrent.alias"/>
-        </UFormGroup>
-        <UFormGroup label="Code" name="code">
-          <UInput disabled v-model="categoryCurrent.code"/>
-        </UFormGroup>
-        <UFormGroup label="Created by" name="createdBy">
-          <UInput disabled v-model="categoryCurrent.createdBy"/>
-        </UFormGroup>
-      </UForm>
-    </template>
-    <UTable :columns="columns" :rows="categoryData || []" @select="mapCategoryInfo" class="mt-10 max-h-96">
-      <template #createdAt-data="{row}">
-        <NuxtTime :datetime="row.createdAt" year="numeric" month="long" day="numeric" locale="en"/>
+  <div>
+    <TableAndDetail @clear="clearState" @del="deleteCategory" @save="saveCategory">
+      <template #detail>
+        <UForm :state="categoryCurrent" class="max-w-96 space-y-5">
+          <UFormGroup label="Name" name="name">
+            <UInput v-model="categoryCurrent.name"/>
+          </UFormGroup>
+          <UFormGroup label="Alias" name="alias">
+            <UInput disabled v-model="categoryCurrent.alias"/>
+          </UFormGroup>
+          <UFormGroup label="Code" name="code">
+            <UInput disabled v-model="categoryCurrent.code"/>
+          </UFormGroup>
+          <UFormGroup label="Created by" name="createdBy">
+            <UInput disabled v-model="categoryCurrent.createdBy"/>
+          </UFormGroup>
+        </UForm>
       </template>
-    </UTable>
-  </TableAndDetail>
+      <UTable :columns="columns" :rows="categoryData || []" @select="mapCategoryInfo" class="mt-10 max-h-96">
+        <template #createdAt-data="{row}">
+          <NuxtTime v-if="row?.createdAt" :datetime="row.createdAt" year="numeric" month="long" day="numeric"
+                    locale="en"/>
+        </template>
+      </UTable>
+    </TableAndDetail>
+  </div>
 </template>
 
 <style scoped>

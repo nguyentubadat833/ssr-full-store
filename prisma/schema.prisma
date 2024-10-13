@@ -55,7 +55,8 @@ model Product {
   name          String
   alias         String
   description   String?
-  price         Float?
+  originalPrice Float?
+  salePercent   Float?
   translate     Json?
   stock         Stock[]
   category      Category?       @relation(fields: [categoryCode], references: [code])

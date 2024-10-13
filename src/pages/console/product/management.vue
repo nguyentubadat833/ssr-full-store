@@ -119,63 +119,36 @@ watchEffect(() => {
 </script>
 
 <template>
-  <TableAndDetail @clear="clearState" @del="deleteProduct" @save="saveProduct">
-    <template #detail>
-      <UForm :state="productCurrent" class="max-w-96 space-y-5">
-        <UFormGroup label="Name" name="name">
-          <UInput v-model="productCurrent.name"/>
-        </UFormGroup>
-        <UFormGroup label="Category" name="category">
-          <USelect v-model="productCurrent.categoryCode" :options="categoryData" option-attribute="name"
-                   value-attribute="code"/>
-        </UFormGroup>
-        <UFormGroup label="Alias" name="alias">
-          <UInput disabled v-model="productCurrent.alias"/>
-        </UFormGroup>
-        <UFormGroup label="Code" name="code">
-          <UInput disabled v-model="productCurrent.code"/>
-        </UFormGroup>
-        <UFormGroup label="Created by" name="createdBy">
-          <UInput disabled v-model="productCurrent.createdBy"/>
-        </UFormGroup>
-      </UForm>
-    </template>
-    <UTable :columns="columns" :rows="productData || []" @select="mapProductInfo" class="mt-10 max-h-96">
-      <template #createdAt-data="{row}">
-        <NuxtTime :datetime="row.createdAt" year="numeric" month="long" day="numeric" locale="en"/>
+  <div>
+    <TableAndDetail @clear="clearState" @del="deleteProduct" @save="saveProduct">
+      <template #detail>
+        <UForm :state="productCurrent" class="max-w-96 space-y-5">
+          <UFormGroup label="Name" name="name">
+            <UInput v-model="productCurrent.name"/>
+          </UFormGroup>
+          <UFormGroup label="Category" name="category">
+            <USelect v-model="productCurrent.categoryCode" :options="categoryData" option-attribute="name"
+                     value-attribute="code"/>
+          </UFormGroup>
+          <UFormGroup label="Alias" name="alias">
+            <UInput disabled v-model="productCurrent.alias"/>
+          </UFormGroup>
+          <UFormGroup label="Code" name="code">
+            <UInput disabled v-model="productCurrent.code"/>
+          </UFormGroup>
+
+          <UFormGroup label="Created by" name="createdBy">
+            <UInput disabled v-model="productCurrent.createdBy"/>
+          </UFormGroup>
+        </UForm>
       </template>
-    </UTable>
-  </TableAndDetail>
-<!--  <div>-->
-<!--    <UForm :state="productCurrent" class="max-w-96 space-y-5">-->
-<!--      <UFormGroup label="Name" name="name">-->
-<!--        <UInput v-model="productCurrent.name"/>-->
-<!--      </UFormGroup>-->
-<!--      <UFormGroup label="Category" name="category">-->
-<!--        <USelect v-model="productCurrent.categoryCode" :options="categoryData" option-attribute="name"-->
-<!--                 value-attribute="code"/>-->
-<!--      </UFormGroup>-->
-<!--      <UFormGroup label="Alias" name="alias">-->
-<!--        <UInput disabled v-model="productCurrent.alias"/>-->
-<!--      </UFormGroup>-->
-<!--      <UFormGroup label="Code" name="code">-->
-<!--        <UInput disabled v-model="productCurrent.code"/>-->
-<!--      </UFormGroup>-->
-<!--      <UFormGroup label="Created by" name="createdBy">-->
-<!--        <UInput disabled v-model="productCurrent.createdBy"/>-->
-<!--      </UFormGroup>-->
-<!--      <div class="flex justify-between pt-3">-->
-<!--        <UButton label="Clear" @click="clearState" color="white"/>-->
-<!--        <UButton :loading="isLoading" label="Delete" @click="deleteProduct" color="red"/>-->
-<!--        <UButton :loading="isLoading" label="Save" @click="saveProduct"/>-->
-<!--      </div>-->
-<!--    </UForm>-->
-<!--    <UTable :columns="columns" :rows="productData || []" @select="mapProductInfo" class="mt-10 max-h-96">-->
-<!--      <template #createdAt-data="{row}">-->
-<!--        <NuxtTime :datetime="row.createdAt" year="numeric" month="long" day="numeric" locale="en"/>-->
-<!--      </template>-->
-<!--    </UTable>-->
-<!--  </div>-->
+      <UTable :columns="columns" :rows="productData || []" @select="mapProductInfo" class="mt-10 max-h-96">
+        <template #createdAt-data="{row}">
+          <NuxtTime v-if="row?.createdAt" :datetime="row.createdAt" year="numeric" month="long" day="numeric" locale="en"/>
+        </template>
+      </UTable>
+    </TableAndDetail>
+  </div>
 </template>
 
 <style scoped>
