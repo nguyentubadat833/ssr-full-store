@@ -1,7 +1,7 @@
 
 export default defineEventHandler(async (event) => {
     const data = await readBody(event)
-    const {update} = productRepo
+    const {update} = warehouseRepo
     const result = await update({
         ...data,
         lastUpdatedAt: new Date(),

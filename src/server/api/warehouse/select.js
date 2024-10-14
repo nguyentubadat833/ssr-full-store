@@ -2,13 +2,13 @@ import _ from "lodash";
 
 export default defineEventHandler((event) => {
     const params = getQuery(event)
-    const {selectType, productCode} = params
+    const {selectType, warehouseCode} = params
     switch (selectType) {
         case 'selectMany':
-            return productRepo.selectManyByStatus()
+            return warehouseRepo.selectManyByStatus()
         case 'selectByCode':
-            if (_.isString(productCode)) {
-                return productRepo.selectByCode(productCode)
+            if (_.isString(warehouseCode)) {
+                return warehouseRepo.selectByCode(warehouseCode)
             }
     }
     return []
