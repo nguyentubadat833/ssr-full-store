@@ -113,10 +113,10 @@ const sort = ref({
           <UInput disabled v-model="warehouseCurrent.code"/>
         </UFormGroup>
         <UFormGroup label="Location" name="location">
-          <UInput disabled v-model="warehouseCurrent.location"/>
+          <UInput v-model="warehouseCurrent.location"/>
         </UFormGroup>
         <UFormGroup label="Max Capacity" name="maxCapacity">
-          <UInput disabled v-model="warehouseCurrent.maxCapacity"/>
+          <UInput v-model="warehouseCurrent.maxCapacity"/>
         </UFormGroup>
         <UFormGroup label="Created by" name="createdBy">
           <UInput disabled v-model="warehouseCurrent.createdBy"/>

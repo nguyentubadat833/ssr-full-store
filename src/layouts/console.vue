@@ -11,10 +11,10 @@ const consoleLinks = ref([
     icon: 'mdi:palette-swatch-variant',
     children: [
       [{
-        label: 'Category',
+        label: 'Category Management',
         to: '/console/product/category'
       }, {
-        label: 'Product',
+        label: 'Product Management',
         to: '/console/product/product'
       }]
     ]
@@ -23,22 +23,58 @@ const consoleLinks = ref([
     icon: 'mdi:warehouse',
     children: [
       [{
-        label: 'Warehouse',
+        label: 'Warehouse Management',
         to: '/console/warehouse/warehouse'
       }]
     ]
   }, {
     label: 'Supply Chain',
-    icon: 'mdi:account-group-outline'
+    icon: 'mdi:account-group-outline',
+    children: [
+      [{
+        label: 'Supplier Management',
+        to: '/console/supply/supplier'
+      }, {
+        label: 'PO Management',
+        to: '/console/supply/po'
+      }]
+    ]
   }, {
     label: 'Order',
-    icon: 'mdi:script-text-outline'
+    icon: 'mdi:script-text-outline',
+    children: [
+      [{
+        label: 'Order Management',
+        to: '/console/order/order'
+      },]
+    ]
   }, {
     label: 'Report',
-    icon: 'mdi:file-table-box-multiple-outline'
+    icon: 'mdi:file-table-box-multiple-outline',
+    children: [
+      [{
+        label: 'Inventory Report',
+        to: '/console/report/inventory'
+      }, {
+        label: 'Purchase Order Report',
+        to: '/console/report/po'
+      }, {
+        label: 'Sales Report',
+        to: '/console/report/sales'
+      }]
+    ]
   }, {
     label: 'System',
-    icon: 'mdi:slack'
+    icon: 'mdi:slack',
+    children: [
+      [{
+        label: 'User Management',
+        to: '/console/system/user'
+      }, {
+        label: 'Settings',
+        to: '/console/system/setting'
+      },]
+    ]
   }]
 ])
 
