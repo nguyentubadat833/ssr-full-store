@@ -10,7 +10,7 @@ async function create(data) {
             name: data.name,
             location: data.location,
             maxCapacity: data.maxCapacity,
-            stock: data.stock,
+            // stock: data.stock,
             createdBy: data.createdBy
         }
     });
@@ -25,7 +25,7 @@ async function update(data) {
             name: data.name,
             location: data.location,
             maxCapacity: data.maxCapacity,
-            stock: data.stock,
+            // stock: data.stock,
             status: data.status,
             lastUpdatedAt: new Date(),
             lastUpdatedBy: data.lastUpdatedBy
