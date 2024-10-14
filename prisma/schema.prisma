@@ -89,8 +89,8 @@ model Warehouse {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   code          String    @unique
   name          String
-  location      String
-  maxCapacity   Int
+  location      String?
+  maxCapacity   Int?
   stock         Stock[]
   status        Int       @default(1)
   createdBy     String

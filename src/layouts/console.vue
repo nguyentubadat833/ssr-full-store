@@ -21,6 +21,12 @@ const consoleLinks = ref([
   }, {
     label: 'Warehouse',
     icon: 'mdi:warehouse',
+    children: [
+      [{
+        label: 'Warehouse',
+        to: '/console/warehouse/warehouse'
+      }]
+    ]
   }, {
     label: 'Supply Chain',
     icon: 'mdi:account-group-outline'
@@ -38,9 +44,9 @@ const consoleLinks = ref([
 
 const title = computed(() => {
   const pageName = route?.meta?.pageName
-  if (pageName){
+  if (pageName) {
     return `console - ${pageName}`
-  }else {
+  } else {
     return 'console'
   }
 })

@@ -5,10 +5,6 @@ export default defineEventHandler(async (event) => {
     const {name} = data
     const {create} = categoryRepo
     const result = await create({
-        code: 'CTG' + randomstring.generate({
-            length: 5,
-            charset: 'numeric'
-        }),
         name: name,
         createdBy: event.user.email,
     })

@@ -1,9 +1,13 @@
 import slug from "slug";
+import randomstring from "randomstring";
 
 async function create(data) {
     return prismaClient.category.create({
         data: {
-            code: data.code,
+            code: 'CTG' + randomstring.generate({
+                length: 5,
+                charset: 'numeric'
+            }),
             name: data.name,
             alias: slug(data.name),
             createdBy: data.createdBy

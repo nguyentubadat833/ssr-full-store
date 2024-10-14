@@ -1,9 +1,13 @@
 import slug from "slug";
+import randomstring from "randomstring";
 
 async function create(data) {
     return prismaClient.product.create({
         data: {
-            code: data.code,
+            code: 'PRD' + randomstring.generate({
+                length: 5,
+                charset: 'numeric'
+            }),
             categoryCode: data.categoryCode,
             originalPrice: data.originalPrice,
             salePercent: data.salePercent,
