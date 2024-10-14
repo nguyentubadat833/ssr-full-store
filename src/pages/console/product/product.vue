@@ -1,7 +1,7 @@
 <script setup>
 
 definePageMeta({
-  // pageName: 'Product Management',
+  pageName: 'Product Management',
   hidden: true
 })
 
@@ -35,6 +35,8 @@ const productCurrent = reactive({
 function clearState() {
   productCurrent.name = ''
   productCurrent.categoryCode = ''
+  productCurrent.originalPrice = 0
+  productCurrent.salePercent = 0
   productCurrent.alias = ''
   productCurrent.code = ''
   productCurrent.createdBy = ''
@@ -66,6 +68,8 @@ async function mapProductInfo(object) {
   if (data) {
     productCurrent.code = data?.code
     productCurrent.categoryCode = data?.categoryCode
+    productCurrent.originalPrice = data?.originalPrice
+    productCurrent.salePercent = data?.salePercent
     productCurrent.name = data?.name
     productCurrent.alias = data?.alias
     productCurrent.createdBy = data?.createdBy
@@ -96,6 +100,12 @@ const columns = [{
   label: 'Name',
   sortable: true
 }, {
+  key: 'originalPrice',
+  label: 'Original Price'
+}, {
+  key: 'salePercent',
+  label: 'Sale Percent'
+},{
   key: 'alias',
   label: 'Alias'
 }, {
@@ -130,13 +140,18 @@ watchEffect(() => {
             <USelect v-model="productCurrent.categoryCode" :options="categoryData" option-attribute="name"
                      value-attribute="code"/>
           </UFormGroup>
-          <UFormGroup label="Alias" name="alias">
-            <UInput disabled v-model="productCurrent.alias"/>
-          </UFormGroup>
           <UFormGroup label="Code" name="code">
             <UInput disabled v-model="productCurrent.code"/>
           </UFormGroup>
-
+          <UFormGroup label="Original Price" name="originalPrice">
+            <UInput v-model="productCurrent.originalPrice" type="number"/>
+          </UFormGroup>
+          <UFormGroup label="Sale Percent" name="salePercent">
+            <UInput v-model="productCurrent.salePercent" type="number"/>
+          </UFormGroup>
+          <UFormGroup label="Alias" name="alias">
+            <UInput disabled v-model="productCurrent.alias"/>
+          </UFormGroup>
           <UFormGroup label="Created by" name="createdBy">
             <UInput disabled v-model="productCurrent.createdBy"/>
           </UFormGroup>

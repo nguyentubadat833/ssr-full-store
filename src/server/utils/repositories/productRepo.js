@@ -5,6 +5,8 @@ async function create(data) {
         data: {
             code: data.code,
             categoryCode: data.categoryCode,
+            originalPrice: data.originalPrice,
+            salePercent: data.salePercent,
             name: data.name,
             alias: slug(data.name),
             createdBy: data.createdBy
@@ -20,6 +22,8 @@ async function update(data) {
         data: {
             name: data.name,
             categoryCode: data.categoryCode,
+            originalPrice: data.originalPrice,
+            salePercent: data.salePercent,
             alias: slug(data.name),
             status: data.status,
             lastUpdatedAt: new Date(),

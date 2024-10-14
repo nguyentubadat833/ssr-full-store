@@ -1,7 +1,7 @@
 <script setup>
 
 definePageMeta({
-  // pageName: 'Category Management',
+  pageName: 'Category Management',
   hidden: true
 })
 

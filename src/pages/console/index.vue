@@ -1,16 +1,14 @@
 <script setup>
 
 definePageMeta({
-  pageName: 'console'
+  // pageName: 'console'
 })
 
 </script>
 
 <template>
   <div>
-    <div>
 
-    </div>
   </div>
 </template>
 

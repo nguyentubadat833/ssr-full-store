@@ -1,41 +1,69 @@
 <script setup>
 const route = useRoute()
-const links = ref([{
-  label: 'Console',
-  link: '/console',
-}, {
-  label: 'Category',
-  link: '/console/category/management'
 
-}, {
-  label: 'Product',
-  link: '/console/product/management'
-}])
+const consoleLinks = ref([
+  [{
+    label: 'Console',
+    icon: 'mdi:view-dashboard',
+    to: '/console',
+  }, {
+    label: 'Product',
+    icon: 'mdi:palette-swatch-variant',
+    children: [
+      [{
+        label: 'Category',
+        to: '/console/product/category'
+      }, {
+        label: 'Product',
+        to: '/console/product/product'
+      }]
+    ]
+  }, {
+    label: 'Warehouse',
+    icon: 'mdi:warehouse',
+  }, {
+    label: 'Supply Chain',
+    icon: 'mdi:account-group-outline'
+  }, {
+    label: 'Order',
+    icon: 'mdi:script-text-outline'
+  }, {
+    label: 'Report',
+    icon: 'mdi:file-table-box-multiple-outline'
+  }, {
+    label: 'System',
+    icon: 'mdi:slack'
+  }]
+])
 
-links.value.forEach(el => {
-  el.active = computed(() => generateResultActive(el.link))
-  el.click = () => navigateTo(el.link)
+const title = computed(() => {
+  const pageName = route?.meta?.pageName
+  if (pageName){
+    return `console - ${pageName}`
+  }else {
+    return 'console'
+  }
 })
-
-function generateResultActive(link) {
-  return route.fullPath === link;
-}
 
 </script>
 
 <template>
-  <div class="px-2 py-5">
-    <!--    <span class="text-3xl font-bold">{{ useToUpper(route?.meta?.pageName) }}</span>-->
-    <div>
+  <div class="px-2 py-5 space-y-7">
+    <div class="flex items-center justify-between">
+      <span class="text-3xl font-bold">{{ useToUpper(title) }}</span>
       <div>
-        <span>{{}}</span>
+        <UHorizontalNavigation :links="consoleLinks">
+          <template #default="{ link }">
+            <UDropdown :items="link.children" :popper="{ placement: 'bottom-start' }">
+              <span class="group-hover:text-primary relative">{{ link.label }}</span>
+            </UDropdown>
+          </template>
+        </UHorizontalNavigation>
       </div>
-      <UHorizontalNavigation :links="links" class="border-b border-gray-200 dark:border-gray-800"/>
     </div>
-    <div class="p-3 mt-5">
+    <div class="p-3">
       <slot/>
     </div>
-
   </div>
 </template>
 
