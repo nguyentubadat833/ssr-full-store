@@ -101,8 +101,8 @@ model Warehouse {
 
 model Supplier {
   id             String          @id @default(auto()) @map("_id") @db.ObjectId
-  name           String
-  contactInfo    String?
+  code           String          @unique
+  info           Json?
   purchaseOrders PurchaseOrder[]
   status         Int             @default(1)
   createdBy      String

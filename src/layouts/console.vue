@@ -33,10 +33,10 @@ const consoleLinks = ref([
     children: [
       [{
         label: 'Supplier Management',
-        to: '/console/supply/supplier'
+        to: '/console/supplier/supplier'
       }, {
         label: 'PO Management',
-        to: '/console/supply/po'
+        to: '/console/supplier/po'
       }]
     ]
   }, {
