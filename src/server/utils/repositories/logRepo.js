@@ -1,5 +1,3 @@
-import {prismaClient} from "~/server/utils/prisma.js";
-
 async function pushLog(message) {
     await prismaClient.log.create({
         data: {

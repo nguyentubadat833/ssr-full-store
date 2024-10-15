@@ -1,5 +1,3 @@
-import {prismaClient} from "~/server/utils/prisma.js";
-
 async function findUser({email, googleId, facebookId}) {
     if (email){
         return prismaClient.user.findFirst({
