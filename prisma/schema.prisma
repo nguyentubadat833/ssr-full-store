@@ -35,54 +35,75 @@ model Log {
   status  Int
 }
 
+model Customer {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  code          String    @unique
+  info          Json?
+  status        Int       @default(1) // 1. Sử dụng
+  createdBy     String
+  createdAt     DateTime  @default(now())
+  lastUpdatedAt DateTime?
+  lastUpdatedBy String?
+
+  order Order[]
+}
+
 model Category {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
   code          String    @unique
   name          String
   alias         String
   translate     Json?
-  product       Product[]
   status        Int       @default(1) // 1. Sử dụng
   createdBy     String
   createdAt     DateTime  @default(now())
   lastUpdatedAt DateTime?
   lastUpdatedBy String?
+
+  product Product[]
 }
 
 model Product {
-  id            String          @id @default(auto()) @map("_id") @db.ObjectId
-  code          String          @unique
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  code          String  @unique
   name          String
   alias         String
   description   String?
   originalPrice Float?
   salePercent   Float?
   translate     Json?
-  stock         Stock[]
-  category      Category?       @relation(fields: [categoryCode], references: [code])
-  // categoryCode  String?         @db.String
-  categoryCode  String?
-  order         Order[]
-  purchaseOrder PurchaseOrder[]
-  status        Int             @default(1)
-  createdBy     String
-  createdAt     DateTime        @default(now())
-  lastUpdatedAt DateTime?
-  lastUpdatedBy String?
-}
 
-model Stock {
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  product       Product   @relation(fields: [productCode], references: [code])
-  productCode   String
-  warehouse     Warehouse @relation(fields: [warehouseCode], references: [code])
-  warehouseCode String
-  quantity      Int
+  stock               Stock[]
+  orderDetail         OrderDetail[]
+  purchaseOrderDetail PurchaseOrderDetail[]
+
+  categoryCode  String?
   status        Int       @default(1)
   createdBy     String
   createdAt     DateTime  @default(now())
   lastUpdatedAt DateTime?
   lastUpdatedBy String?
+
+  category Category? @relation(fields: [categoryCode], references: [code])
+}
+
+model Stock {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  intQuantity   Int
+  outQuantity   Int?
+  status        Int       @default(1) // 0. Die, 1.Available
+  createdBy     String
+  createdAt     DateTime  @default(now())
+  lastUpdatedAt DateTime?
+  lastUpdatedBy String?
+
+  productCode   String
+  warehouseCode String
+  receivingCode String
+
+  product   Product   @relation(fields: [productCode], references: [code])
+  warehouse Warehouse @relation(fields: [warehouseCode], references: [code])
+  receiving Receiving @relation(fields: [receivingCode], references: [code])
 }
 
 model Warehouse {
@@ -91,46 +112,93 @@ model Warehouse {
   name          String
   location      String?
   maxCapacity   Int?
-  stock         Stock[]
   status        Int       @default(1)
   createdBy     String
   createdAt     DateTime  @default(now())
   lastUpdatedAt DateTime?
   lastUpdatedBy String?
+
+  stock Stock[]
 }
 
 model Supplier {
-  id             String          @id @default(auto()) @map("_id") @db.ObjectId
-  code           String          @unique
-  info           Json?
-  purchaseOrders PurchaseOrder[]
-  status         Int             @default(1)
-  createdBy      String
-  createdAt      DateTime        @default(now())
-  lastUpdatedAt  DateTime?
-  lastUpdatedBy  String?
-}
-
-model Order {
   id            String    @id @default(auto()) @map("_id") @db.ObjectId
-  product       Product   @relation(fields: [productCode], references: [code])
-  productCode   String
-  quantity      Int
-  status        Int       @default(1) // trạng thái đơn hàng: "pending", "shipped", "delivered"
+  code          String    @unique
+  info          Json?
+  status        Int       @default(1)
   createdBy     String
   createdAt     DateTime  @default(now())
   lastUpdatedAt DateTime?
   lastUpdatedBy String?
+
+  purchaseOrders PurchaseOrder[]
+}
+
+model Order {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  customerCode  String
+  totalAmount   Float
+  orderDate     DateTime
+  status        Int       @default(0) // 0. Pending, 1. Shipped, 2. Delivered
+  createdBy     String
+  createdAt     DateTime  @default(now())
+  lastUpdatedAt DateTime?
+  lastUpdatedBy String?
+
+  orderDetail OrderDetail[]
+
+  customer Customer @relation(fields: [customerCode], references: [code])
+}
+
+model OrderDetail {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  orderId     String @db.ObjectId
+  productCode String
+  quantity    Int
+  unitPrice   Float
+
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productCode], references: [code])
 }
 
 model PurchaseOrder {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  supplier    Supplier @relation(fields: [supplierId], references: [id])
-  supplierId  String   @db.ObjectId
-  product     Product  @relation(fields: [productCode], references: [code])
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  code         String   @unique
+  supplierCode String
+  status       Int      @default(0) // 0. Pending, 1. Ordered, 2. Received
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  purchaseOrderDetail PurchaseOrderDetail[]
+  receiving           Receiving[]
+
+  supplier Supplier @relation(fields: [supplierCode], references: [code])
+}
+
+model PurchaseOrderDetail {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  poCode      String
   productCode String
   quantity    Int
-  status      Int      @default(1) // trạng thái: "ordered", "received"
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  unitPrice   Float?
+  totalAmount Float
+
+  po      PurchaseOrder @relation(fields: [poCode], references: [code])
+  product Product       @relation(fields: [productCode], references: [code])
+}
+
+model Receiving {
+  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+  code          String    @unique
+  poCode        String
+  status        Int       @default(0) // 0. Pending, 1. Progress 2. Imported
+  receivedDate  DateTime?
+  createdBy     String
+  createdAt     DateTime  @default(now())
+  lastUpdatedAt DateTime?
+  lastUpdatedBy String?
+
+  stock Stock[]
+
+  po PurchaseOrder @relation(fields: [poCode], references: [code])
 }

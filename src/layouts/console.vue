@@ -32,11 +32,11 @@ const consoleLinks = ref([
     icon: 'mdi:account-group-outline',
     children: [
       [{
-        label: 'Supplier Management',
-        to: '/console/purchasing/supplier'
-      }, {
         label: 'PO Management',
         to: '/console/purchasing/po'
+      }, {
+        label: 'Supplier Management',
+        to: '/console/purchasing/supplier'
       }]
     ]
   }, {
@@ -46,6 +46,9 @@ const consoleLinks = ref([
       [{
         label: 'Order Management',
         to: '/console/sales/order'
+      }, {
+        label: 'Customer Management',
+        to: '/console/sales/customer'
       },]
     ]
   }, {
