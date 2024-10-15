@@ -13,8 +13,9 @@ async function findByCode(code) {
         endpoint: '/api/supplier/select',
         params: {
             selectType: 'selectByCode',
-            categoryCode: code
-        }
+            supplierCode: code
+        },
+        isShowSuccessMessage: false
     })
 }
 

@@ -36,9 +36,9 @@ async function selectByCode(code) {
 
 async function selectManyByStatus({status = 1} = {}) {
     return prismaClient.purchaseOrder.findMany({
-        where: {
-            status: status
-        }
+        // where: {
+        //     status: status
+        // }
     })
 }
 

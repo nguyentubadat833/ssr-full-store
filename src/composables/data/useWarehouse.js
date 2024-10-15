@@ -13,7 +13,7 @@ async function findByCode(code) {
         endpoint: '/api/warehouse/select',
         params: {
             selectType: 'selectByCode',
-            productCode: code
+            warehouseCode: code
         }
     })
 }

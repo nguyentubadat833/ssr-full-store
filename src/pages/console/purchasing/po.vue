@@ -6,7 +6,7 @@ definePageMeta({
 })
 
 const {findByCode, data, save, del} = usePurchaseOrder
-const {data: supplierFetch} = useSupplier
+const {data: supplierFetch, findByCode: findSupplierByCode} = useSupplier
 const {data: purchaseOrderData, refresh: refreshData} = await useLazyAsyncData('purchase-order-data', () => data())
 const {data: supplierData} = await useLazyAsyncData('supplier-data', () => supplierFetch(), {
   transform: (input) => {
@@ -52,6 +52,13 @@ async function deletePurchaseOrder() {
       })
 }
 
+async function mapSupplierData(supplierCode) {
+  const data = await findSupplierByCode(supplierCode)
+  if (data) {
+    purchaseOrderCurrent.supplierName = data?.info?.name
+  }
+}
+
 async function mapPurchaseOrderInfo(object) {
   let data
   if (isString(object)) {
@@ -65,6 +72,8 @@ async function mapPurchaseOrderInfo(object) {
     purchaseOrderCurrent.code = data?.code
     purchaseOrderCurrent.supplierCode = data?.supplierCode
     purchaseOrderCurrent.createdBy = data?.createdBy
+
+    mapSupplierData(purchaseOrderCurrent.supplierCode)
   }
 }
 
@@ -115,15 +124,15 @@ function selectSupplier(data) {
             <UInput disabled v-model="purchaseOrderCurrent.code"/>
           </UFormGroup>
           <UFormGroup label="Supplier" name="supplierCode">
-           <div class="space-y-2">
-             <div class="flex gap-2">
-               <UInput disabled v-model="purchaseOrderCurrent.supplierCode" class="w-full"/>
-               <SearchData @selected="selectSupplier" :data="supplierData"
-                           :columns="[{key: 'code', label: 'Code'}, {key: 'name', label: 'Name'}]"
-                           title="Select Customer"/>
-             </div>
-             <UInput disabled v-model="purchaseOrderCurrent.supplierName"/>
-           </div>
+            <div class="space-y-2">
+              <div class="flex gap-2">
+                <UInput disabled v-model="purchaseOrderCurrent.supplierCode" class="w-full"/>
+                <SearchData @selected="selectSupplier" :data="supplierData"
+                            :columns="[{key: 'code', label: 'Code'}, {key: 'name', label: 'Name'}]"
+                            title="Select Customer"/>
+              </div>
+              <UInput disabled v-model="purchaseOrderCurrent.supplierName"/>
+            </div>
           </UFormGroup>
           <UFormGroup label="Created by" name="createdBy">
             <UInput disabled v-model="purchaseOrderCurrent.createdBy"/>
