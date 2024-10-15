@@ -28,24 +28,24 @@ const consoleLinks = ref([
       }]
     ]
   }, {
-    label: 'Supply Chain',
+    label: 'Purchasing',
     icon: 'mdi:account-group-outline',
     children: [
       [{
         label: 'Supplier Management',
-        to: '/console/supplier/supplier'
+        to: '/console/purchasing/supplier'
       }, {
         label: 'PO Management',
-        to: '/console/supplier/po'
+        to: '/console/purchasing/po'
       }]
     ]
   }, {
-    label: 'Order',
+    label: 'Sales',
     icon: 'mdi:script-text-outline',
     children: [
       [{
         label: 'Order Management',
-        to: '/console/order/order'
+        to: '/console/sales/order'
       },]
     ]
   }, {
