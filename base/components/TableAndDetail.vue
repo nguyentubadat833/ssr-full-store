@@ -17,7 +17,7 @@ function save() {
 
 <template>
   <div>
-    <div class="max-w-96 space-y-6">
+    <div class="space-y-6">
       <slot name="detail"/>
       <div v-if="$slots.detail" class="flex justify-center gap-5">
         <UButton icon="heroicons:x-circle-20-solid" label="Clear" @click="clear"/>

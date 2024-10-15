@@ -84,9 +84,9 @@ const consoleLinks = ref([
 const title = computed(() => {
   const pageName = route?.meta?.pageName
   if (pageName) {
-    return `console - ${pageName}`
+    return `CONSOLE - ${pageName}`
   } else {
-    return 'console'
+    return 'CONSOLE'
   }
 })
 
@@ -94,16 +94,19 @@ const title = computed(() => {
 
 <template>
   <div class="px-2 py-5 space-y-7">
-    <div class="flex items-center justify-between">
-      <span class="text-3xl font-bold">{{ useToUpper(title) }}</span>
+    <div class="flex lg:flex-row flex-row md:flex-col items-center justify-between gap-2">
+      <span class="text-lg lg:text-xl xl:text-2xl font-bold">{{ title }}</span>
       <div>
-        <UHorizontalNavigation :links="consoleLinks">
+        <UHorizontalNavigation :links="consoleLinks" class="md:block hidden">
           <template #default="{ link }">
             <UDropdown :items="link.children" :popper="{ placement: 'bottom-start' }">
               <span class="group-hover:text-primary relative">{{ link.label }}</span>
             </UDropdown>
           </template>
         </UHorizontalNavigation>
+        <UDropdown :items="consoleLinks" :popper="{ placement: 'bottom-start' }" class="md:hidden">
+          <UButton icon="heroicons:bars-3-solid"/>
+        </UDropdown>
       </div>
     </div>
     <div class="p-3">

@@ -7,6 +7,7 @@ definePageMeta({
 
 const {findByCode, data, save, del} = usePurchaseOrder
 const {data: supplierFetch, findByCode: findSupplierByCode} = useSupplier
+const {data: productFetch} = useProduct
 const {data: purchaseOrderData, refresh: refreshData} = await useLazyAsyncData('purchase-order-data', () => data())
 const {data: supplierData} = await useLazyAsyncData('supplier-data', () => supplierFetch(), {
   transform: (input) => {
@@ -17,6 +18,22 @@ const {data: supplierData} = await useLazyAsyncData('supplier-data', () => suppl
           id: el.id,
           code: el.code,
           name: el.info.name
+        })
+      })
+    }
+    return result
+  }
+})
+
+const {data: productData} = await useLazyAsyncData('product-data', () => productFetch(), {
+  transform: (input) => {
+    let result = []
+    if (Array.isArray(input)) {
+      input.forEach(el => {
+        result.push({
+          id: el.id,
+          code: el.code,
+          name: el.name
         })
       })
     }
@@ -119,25 +136,29 @@ function selectSupplier(data) {
   <div>
     <TableAndDetail @clear="clearState" @del="deletePurchaseOrder" @save="savePurchaseOrder">
       <template #detail>
-        <UForm :state="purchaseOrderCurrent" class="max-w-96 space-y-5">
-          <UFormGroup label="Code" name="code">
-            <UInput disabled v-model="purchaseOrderCurrent.code"/>
-          </UFormGroup>
-          <UFormGroup label="Supplier" name="supplierCode">
-            <div class="space-y-2">
+        <div class="grid grid-cols-2 gap-4">
+          <UForm :state="purchaseOrderCurrent" class="max-w-96 space-y-5">
+            <UFormGroup label="Code" name="code">
+              <UInput disabled v-model="purchaseOrderCurrent.code"/>
+            </UFormGroup>
+            <UFormGroup label="Supplier" name="supplierCode">
               <div class="flex gap-2">
-                <UInput disabled v-model="purchaseOrderCurrent.supplierCode" class="w-full"/>
+                <UInput disabled v-model="purchaseOrderCurrent.supplierName" class="w-full"/>
                 <SearchData @selected="selectSupplier" :data="supplierData"
                             :columns="[{key: 'code', label: 'Code'}, {key: 'name', label: 'Name'}]"
                             title="Select Customer"/>
               </div>
-              <UInput disabled v-model="purchaseOrderCurrent.supplierName"/>
-            </div>
-          </UFormGroup>
-          <UFormGroup label="Created by" name="createdBy">
-            <UInput disabled v-model="purchaseOrderCurrent.createdBy"/>
-          </UFormGroup>
-        </UForm>
+            </UFormGroup>
+            <UFormGroup label="Created by" name="createdBy">
+              <UInput disabled v-model="purchaseOrderCurrent.createdBy"/>
+            </UFormGroup>
+          </UForm>
+          <div>
+            <UTable :rows="purchaseOrderData || []" @select="mapPurchaseOrderInfo" class="max-h-96">
+
+            </UTable>
+          </div>
+        </div>
       </template>
       <UTable :columns="columns" :rows="purchaseOrderData || []" @select="mapPurchaseOrderInfo" class="mt-10 max-h-96">
         <template #createdAt-data="{row}">
