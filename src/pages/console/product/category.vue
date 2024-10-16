@@ -1,6 +1,7 @@
 <script setup lang="ts">
 
-import type {IDataComponent} from "~/utils/IComponents/IDataComponent";
+
+import {ABDataComponent} from "~/utils/defineComponents/ABDataComponent";
 
 definePageMeta({
   pageName: 'Category Management',
@@ -41,10 +42,7 @@ const sort = ref({
   direction: 'desc'
 })
 
-class CategoryComponent implements IDataComponent {
-  isOpenModal = ref<boolean>()
-  isLoading = ref<boolean>()
-
+class CategoryComponent extends ABDataComponent {
   clearState() {
     categoryCurrent.name = ''
     categoryCurrent.alias = ''
@@ -68,7 +66,6 @@ class CategoryComponent implements IDataComponent {
       categoryCurrent.alias = data?.alias
       categoryCurrent.createdBy = data?.createdBy
     }
-
   }
 
   async deleteData() {

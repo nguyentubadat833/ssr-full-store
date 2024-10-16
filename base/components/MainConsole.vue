@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import type {IDataComponent} from "~/utils/IComponents/IDataComponent";
 
 // const emit = defineEmits(['print', 'create'])
 
+import type {ABDataComponent} from "~/utils/defineComponents/ABDataComponent";
+
 const {dataComponent} = defineProps<{
-  dataComponent: IDataComponent
+  dataComponent: ABDataComponent
 }>()
 </script>
 

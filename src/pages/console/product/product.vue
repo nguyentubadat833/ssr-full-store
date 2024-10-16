@@ -1,5 +1,7 @@
 <script setup lang="ts">
-import type {IDataComponent} from "~/utils/IComponents/IDataComponent";
+
+
+import {ABDataComponent} from "~/utils/defineComponents/ABDataComponent";
 
 definePageMeta({
   pageName: 'Product Management',
@@ -68,11 +70,8 @@ const sort = ref({
   direction: 'desc'
 })
 
-class ProductComponent implements IDataComponent {
-  isOpenModal = ref<boolean>()
-  isLoading = ref<boolean>()
-
-  clearState(): void {
+class ProductComponent extends ABDataComponent {
+  clearState(){
     productCurrent.name = ''
     productCurrent.categoryCode = ''
     productCurrent.originalPrice = 0
