@@ -46,6 +46,7 @@ const purchaseOrderCurrent = reactive({
   code: '',
   supplierCode: '',
   supplierName: '',
+  details: [],
   createdBy: ''
 })
 
@@ -105,7 +106,7 @@ async function savePurchaseOrder() {
   }
 }
 
-const columns = [{
+const poColumns = [{
   key: 'code',
   label: 'Code'
 }, {
@@ -120,6 +121,13 @@ const columns = [{
   sortable: true
 }]
 
+const poDetailsColumns = [
+  {key: 'productCode', label: 'Product Name'},
+  {key: 'quantity', label: 'Quantity'},
+  {key: 'unitPrice', label: 'Unit Price'},
+  {key: 'totalAmount', label: 'Total Amount'}
+]
+
 const sort = ref({
   column: 'createdAt',
   direction: 'desc'
@@ -130,37 +138,48 @@ function selectSupplier(data) {
   purchaseOrderCurrent.supplierName = data[0].name
 }
 
+function selectProduct(data) {
+
+}
+
 </script>
 
 <template>
   <div>
     <TableAndDetail @clear="clearState" @del="deletePurchaseOrder" @save="savePurchaseOrder">
       <template #detail>
-        <div class="grid grid-cols-2 gap-4">
-          <UForm :state="purchaseOrderCurrent" class="max-w-96 space-y-5">
-            <UFormGroup label="Code" name="code">
-              <UInput disabled v-model="purchaseOrderCurrent.code"/>
-            </UFormGroup>
-            <UFormGroup label="Supplier" name="supplierCode">
-              <div class="flex gap-2">
-                <UInput disabled v-model="purchaseOrderCurrent.supplierName" class="w-full"/>
-                <SearchData @selected="selectSupplier" :data="supplierData"
-                            :columns="[{key: 'code', label: 'Code'}, {key: 'name', label: 'Name'}]"
-                            title="Select Customer"/>
-              </div>
-            </UFormGroup>
-            <UFormGroup label="Created by" name="createdBy">
-              <UInput disabled v-model="purchaseOrderCurrent.createdBy"/>
-            </UFormGroup>
-          </UForm>
+        <div class="flex gap-8">
           <div>
-            <UTable :rows="purchaseOrderData || []" @select="mapPurchaseOrderInfo" class="max-h-96">
-
-            </UTable>
+            <UForm :state="purchaseOrderCurrent" class="w-96 space-y-5">
+              <UFormGroup label="Code" name="code">
+                <UInput disabled v-model="purchaseOrderCurrent.code"/>
+              </UFormGroup>
+              <UFormGroup label="Supplier" name="supplierCode">
+                <div class="flex gap-2">
+                  <UInput disabled v-model="purchaseOrderCurrent.supplierName" class="w-full"/>
+                  <SearchData @selected="selectSupplier" :data="supplierData"
+                              :columns="[{key: 'code', label: 'Code'}, {key: 'name', label: 'Name'}]"
+                              title="Select Customer"/>
+                </div>
+              </UFormGroup>
+              <UFormGroup label="Created by" name="createdBy">
+                <UInput disabled v-model="purchaseOrderCurrent.createdBy"/>
+              </UFormGroup>
+            </UForm>
+          </div>
+          <div>
+            <UTable :rows="purchaseOrderCurrent.details" :columns="poDetailsColumns" class="max-h-96"/>
+            <div class="flex justify-end mt-2">
+              <SearchData @selected="selectProduct" :data="productData"
+                          :columns="[{key: 'code', label: 'Code'}, {key: 'name', label: 'Name'}]"
+                          title="Select product"/>
+            </div>
           </div>
         </div>
+
       </template>
-      <UTable :columns="columns" :rows="purchaseOrderData || []" @select="mapPurchaseOrderInfo" class="mt-10 max-h-96">
+      <UTable :columns="poColumns" :rows="purchaseOrderData || []" @select="mapPurchaseOrderInfo"
+              class="mt-10 max-h-96">
         <template #createdAt-data="{row}">
           <NuxtTime v-if="row?.createdAt" :datetime="row.createdAt" year="numeric" month="long" day="numeric"
                     locale="en"/>

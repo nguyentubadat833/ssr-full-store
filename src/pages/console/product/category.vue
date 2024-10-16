@@ -1,14 +1,21 @@
-<script setup>
+<script setup lang="ts">
+
+import type {ITableComponent} from "~/utils/IComponents/ITableComponent";
 
 definePageMeta({
   pageName: 'Category Management',
   hidden: true
 })
 
+class CategoryComponent implements ITableComponent{
+
+}
+
 const {findByCode, data, save, del} = useCategory
 const {data: categoryData, refresh: refreshData} = await useLazyAsyncData('category-data', () => data())
 
 const isLoading = ref(false)
+const isOpenModal = ref(false)
 const categoryCurrent = reactive({
   name: '',
   alias: '',
@@ -38,6 +45,7 @@ async function deleteCategory() {
 }
 
 async function mapCategoryInfo(object) {
+  isOpenModal.value = true
   let data
   if (isString(object)) {
     data = await findByCode(object)
@@ -96,30 +104,34 @@ const sort = ref({
 
 <template>
   <div>
-    <TableAndDetail @clear="clearState" @del="deleteCategory" @save="saveCategory">
-      <template #detail>
-        <UForm :state="categoryCurrent" class="max-w-96 space-y-5">
-          <UFormGroup label="Name" name="name">
-            <UInput v-model="categoryCurrent.name"/>
-          </UFormGroup>
-          <UFormGroup label="Alias" name="alias">
-            <UInput disabled v-model="categoryCurrent.alias"/>
-          </UFormGroup>
-          <UFormGroup label="Code" name="code">
-            <UInput disabled v-model="categoryCurrent.code"/>
-          </UFormGroup>
-          <UFormGroup label="Created by" name="createdBy">
-            <UInput disabled v-model="categoryCurrent.createdBy"/>
-          </UFormGroup>
-        </UForm>
-      </template>
-      <UTable :columns="columns" :rows="categoryData || []" @select="mapCategoryInfo" class="mt-10 max-h-96">
+    <MainConsole @create="() => {clearState(); isOpenModal = true}">
+      <UTable :columns="columns" :rows="categoryData || []" @select="mapCategoryInfo" class="max-h-96">
         <template #createdAt-data="{row}">
           <NuxtTime v-if="row?.createdAt" :datetime="row.createdAt" year="numeric" month="long" day="numeric"
                     locale="en"/>
         </template>
       </UTable>
-    </TableAndDetail>
+    </MainConsole>
+    <ClientOnly>
+      <UModal v-model="isOpenModal" :overlay="false">
+        <ModalBody @clear="clearState" @del="deleteCategory" @save="saveCategory" @close="isOpenModal = false">
+          <UForm :state="categoryCurrent" class="space-y-5">
+            <UFormGroup label="Name" name="name">
+              <UInput v-model="categoryCurrent.name"/>
+            </UFormGroup>
+            <UFormGroup label="Alias" name="alias">
+              <UInput disabled v-model="categoryCurrent.alias"/>
+            </UFormGroup>
+            <UFormGroup label="Code" name="code">
+              <UInput disabled v-model="categoryCurrent.code"/>
+            </UFormGroup>
+            <UFormGroup label="Created by" name="createdBy">
+              <UInput disabled v-model="categoryCurrent.createdBy"/>
+            </UFormGroup>
+          </UForm>
+        </ModalBody>
+      </UModal>
+    </ClientOnly>
   </div>
 </template>
 

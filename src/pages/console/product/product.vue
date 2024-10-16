@@ -1,4 +1,5 @@
-<script setup>
+<script setup lang="ts">
+
 
 definePageMeta({
   pageName: 'Product Management',
@@ -23,6 +24,7 @@ const {data: categoryData} = await useLazyAsyncData('category-data', () => useCa
   }
 })
 
+const isOpenModal = ref(false)
 const isLoading = ref(false)
 const productCurrent = reactive({
   name: '',
@@ -57,6 +59,7 @@ async function deleteProduct() {
 }
 
 async function mapProductInfo(object) {
+  isOpenModal.value = true
   let data
   if (isString(object)) {
     data = await findByCode(object)
@@ -105,7 +108,7 @@ const columns = [{
 }, {
   key: 'salePercent',
   label: 'Sale Percent'
-},{
+}, {
   key: 'alias',
   label: 'Alias'
 }, {
@@ -126,43 +129,50 @@ watchEffect(() => {
   console.log(categoryData.value)
 })
 
+
+
 </script>
 
 <template>
   <div>
-    <TableAndDetail @clear="clearState" @del="deleteProduct" @save="saveProduct">
-      <template #detail>
-        <UForm :state="productCurrent" class="max-w-96 space-y-5">
-          <UFormGroup label="Name" name="name">
-            <UInput v-model="productCurrent.name"/>
-          </UFormGroup>
-          <UFormGroup label="Category" name="category">
-            <USelect v-model="productCurrent.categoryCode" :options="categoryData" option-attribute="name"
-                     value-attribute="code"/>
-          </UFormGroup>
-          <UFormGroup label="Code" name="code">
-            <UInput disabled v-model="productCurrent.code"/>
-          </UFormGroup>
-          <UFormGroup label="Original Price" name="originalPrice">
-            <UInput v-model="productCurrent.originalPrice" type="number"/>
-          </UFormGroup>
-          <UFormGroup label="Sale Percent" name="salePercent">
-            <UInput v-model="productCurrent.salePercent" type="number"/>
-          </UFormGroup>
-          <UFormGroup label="Alias" name="alias">
-            <UInput disabled v-model="productCurrent.alias"/>
-          </UFormGroup>
-          <UFormGroup label="Created by" name="createdBy">
-            <UInput disabled v-model="productCurrent.createdBy"/>
-          </UFormGroup>
-        </UForm>
-      </template>
+    <MainConsole @create="() => {clearState(); isOpenModal = true}">
       <UTable :columns="columns" :rows="productData || []" @select="mapProductInfo" class="mt-10 max-h-96">
         <template #createdAt-data="{row}">
-          <NuxtTime v-if="row?.createdAt" :datetime="row.createdAt" year="numeric" month="long" day="numeric" locale="en"/>
+          <NuxtTime v-if="row?.createdAt" :datetime="row.createdAt" year="numeric" month="long" day="numeric"
+                    locale="en"/>
         </template>
       </UTable>
-    </TableAndDetail>
+    </MainConsole>
+    <ClientOnly>
+      <UModal v-model="isOpenModal" :overlay="false">
+        <ModalBody @clear="clearState" @del="deleteProduct" @save="saveProduct" @close="() => isOpenModal = false">
+          <UForm :state="productCurrent" class="space-y-5">
+            <UFormGroup label="Name" name="name">
+              <UInput v-model="productCurrent.name"/>
+            </UFormGroup>
+            <UFormGroup label="Category" name="category">
+              <USelect v-model="productCurrent.categoryCode" :options="categoryData" option-attribute="name"
+                       value-attribute="code"/>
+            </UFormGroup>
+            <UFormGroup label="Code" name="code">
+              <UInput disabled v-model="productCurrent.code"/>
+            </UFormGroup>
+            <UFormGroup label="Original Price" name="originalPrice">
+              <UInput v-model="productCurrent.originalPrice" type="number"/>
+            </UFormGroup>
+            <UFormGroup label="Sale Percent" name="salePercent">
+              <UInput v-model="productCurrent.salePercent" type="number"/>
+            </UFormGroup>
+            <UFormGroup label="Alias" name="alias">
+              <UInput disabled v-model="productCurrent.alias"/>
+            </UFormGroup>
+            <UFormGroup label="Created by" name="createdBy">
+              <UInput disabled v-model="productCurrent.createdBy"/>
+            </UFormGroup>
+          </UForm>
+        </ModalBody>
+      </UModal>
+    </ClientOnly>
   </div>
 </template>
 

@@ -118,7 +118,7 @@ model Warehouse {
   lastUpdatedAt DateTime?
   lastUpdatedBy String?
 
-  stock Stock[]
+  stocks Stock[]
 }
 
 model Supplier {
@@ -145,7 +145,7 @@ model Order {
   lastUpdatedAt DateTime?
   lastUpdatedBy String?
 
-  orderDetail OrderDetail[]
+  details OrderDetail[]
 
   customer Customer @relation(fields: [customerCode], references: [code])
 }
@@ -171,8 +171,8 @@ model PurchaseOrder {
   lastUpdatedAt DateTime?
   lastUpdatedBy String?
 
-  purchaseOrderDetail PurchaseOrderDetail[]
-  receiving           Receiving[]
+  details   PurchaseOrderDetail[]
+  receiving Receiving[]
 
   supplier Supplier @relation(fields: [supplierCode], references: [code])
 }
@@ -200,7 +200,7 @@ model Receiving {
   lastUpdatedAt DateTime?
   lastUpdatedBy String?
 
-  stock Stock[]
+  stocks Stock[]
 
   po PurchaseOrder @relation(fields: [poCode], references: [code])
 }

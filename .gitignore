@@ -1,3 +1,6 @@
+/upload
+/lib
+
 # Nuxt dev/build outputs
 .output
 .data

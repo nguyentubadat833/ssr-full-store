@@ -16,7 +16,11 @@ export default defineNuxtConfig({
             'stores',
             'composables',
             'composables/*/index.{ts,js,mjs,mts}',
-            'composables/**/**'
+            'composables/**/**',
+            'utils',
+            'utils/*/index.{ts,js,mjs,mts}',
+            'utils/**/**'
+
         ]
     },
     app: {

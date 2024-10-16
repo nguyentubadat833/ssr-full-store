@@ -1,4 +1,6 @@
 <script setup>
+import MainConsole from "~~/base/components/MainConsole.vue";
+
 const route = useRoute()
 
 const consoleLinks = ref([
@@ -93,8 +95,8 @@ const title = computed(() => {
 </script>
 
 <template>
-  <div class="px-2 py-5 space-y-7">
-    <div class="flex lg:flex-row flex-row md:flex-col items-center justify-between gap-2">
+  <div class="px-2">
+    <div class="flex lg:flex-row flex-row md:flex-col items-center justify-between gap-2 border-b p-3">
       <span class="text-lg lg:text-xl xl:text-2xl font-bold">{{ title }}</span>
       <div>
         <UHorizontalNavigation :links="consoleLinks" class="md:block hidden">
@@ -109,9 +111,7 @@ const title = computed(() => {
         </UDropdown>
       </div>
     </div>
-    <div class="p-3">
-      <slot/>
-    </div>
+    <slot/>
   </div>
 </template>
 

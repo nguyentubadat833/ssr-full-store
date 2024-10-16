@@ -1,4 +1,5 @@
 <script setup>
+
 definePageMeta({
   pageName: 'Warehouse Management',
   hidden: true
@@ -7,6 +8,7 @@ definePageMeta({
 const {findByCode, data, save, del} = useWarehouse
 const {data: warehouseData, refresh: refreshData} = await useLazyAsyncData('warehouse-data', () => data())
 
+const isOpenModal = ref(false)
 const isLoading = ref(false)
 const warehouseCurrent = reactive({
   name: '',
@@ -41,6 +43,7 @@ async function deleteWarehouse() {
 }
 
 async function mapWarehouseInfo(object) {
+  isOpenModal.value = true
   let data
   if (isString(object)) {
     data = await findByCode(object)
@@ -85,7 +88,7 @@ const columns = [{
 }, {
   key: 'maxCapacity',
   label: 'Max capacity'
-},{
+}, {
   key: 'createdBy',
   label: 'Create by'
 }, {
@@ -102,35 +105,39 @@ const sort = ref({
 </script>
 
 <template>
-<div>
-  <TableAndDetail @clear="clearState" @del="deleteWarehouse" @save="saveWarehouse">
-    <template #detail>
-      <UForm :state="warehouseCurrent" class="max-w-96 space-y-5">
-        <UFormGroup label="Name" name="name">
-          <UInput v-model="warehouseCurrent.name"/>
-        </UFormGroup>
-        <UFormGroup label="Code" name="code">
-          <UInput disabled v-model="warehouseCurrent.code"/>
-        </UFormGroup>
-        <UFormGroup label="Location" name="location">
-          <UInput v-model="warehouseCurrent.location"/>
-        </UFormGroup>
-        <UFormGroup label="Max Capacity" name="maxCapacity">
-          <UInput v-model="warehouseCurrent.maxCapacity"/>
-        </UFormGroup>
-        <UFormGroup label="Created by" name="createdBy">
-          <UInput disabled v-model="warehouseCurrent.createdBy"/>
-        </UFormGroup>
-      </UForm>
-    </template>
-    <UTable :columns="columns" :rows="warehouseData || []" @select="mapWarehouseInfo" class="mt-10 max-h-96">
-      <template #createdAt-data="{row}">
-        <NuxtTime v-if="row?.createdAt" :datetime="row.createdAt" year="numeric" month="long" day="numeric"
-                  locale="en"/>
-      </template>
-    </UTable>
-  </TableAndDetail>
-</div>
+  <div>
+    <MainConsole @create="() => {clearState(); isOpenModal = true}">
+      <UTable :columns="columns" :rows="warehouseData || []" @select="mapWarehouseInfo" class="mt-10 max-h-96">
+        <template #createdAt-data="{row}">
+          <NuxtTime v-if="row?.createdAt" :datetime="row.createdAt" year="numeric" month="long" day="numeric"
+                    locale="en"/>
+        </template>
+      </UTable>
+    </MainConsole>
+    <ClientOnly>
+      <UModal v-model="isOpenModal" :overlay="false">
+        <ModalBody @clear="clearState" >
+          <UForm :state="warehouseCurrent" class="space-y-5">
+            <UFormGroup label="Name" name="name">
+              <UInput v-model="warehouseCurrent.name"/>
+            </UFormGroup>
+            <UFormGroup label="Code" name="code">
+              <UInput disabled v-model="warehouseCurrent.code"/>
+            </UFormGroup>
+            <UFormGroup label="Location" name="location">
+              <UInput v-model="warehouseCurrent.location"/>
+            </UFormGroup>
+            <UFormGroup label="Max Capacity" name="maxCapacity">
+              <UInput v-model="warehouseCurrent.maxCapacity"/>
+            </UFormGroup>
+            <UFormGroup label="Created by" name="createdBy">
+              <UInput disabled v-model="warehouseCurrent.createdBy"/>
+            </UFormGroup>
+          </UForm>
+        </ModalBody>
+      </UModal>
+    </ClientOnly>
+  </div>
 </template>
 
 <style scoped>
